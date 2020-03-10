@@ -9,11 +9,11 @@ _OBJ = $(patsubst %,$(objdir)/%,$(OBJ))
 
 
 all: $(_OBJ)
-	$(cc) $(headers) $(CFLAGS) $(_OBJ) -o MetroFinder
+	$(cc) $(headers) $(CFLAGS) $(SFFLAGS) $(_OBJ) -o MetroFinder
 	./MetroFinder
 
 $(objdir)/%.o: src/%.cpp $(objdir)
-	$(cc) -c $(headers) $(CFLAGS) $< -o $@	
+	$(cc) -c $(headers) $(CFLAGS)  $(SFFLAGS) $< -o $@	
 
 $(objdir) :
 	mkdir $(objdir)

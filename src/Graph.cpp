@@ -80,6 +80,7 @@ void Graph::load_line()
 		while (!to_treat.empty())
 		{
 			Vertex& buffer = vertices[to_treat.top()];
+			
 			to_treat.pop(); 
 			for (auto& e : buffer.getEdges())
 			{
@@ -90,6 +91,11 @@ void Graph::load_line()
 			}
 		}
 	}
+}
+
+std::map<unsigned int, Vertex>& Graph::getVertices()
+{
+	return vertices;
 }
 
 int Graph::add_vertex(const std::string name, const unsigned int id, std::string line)
