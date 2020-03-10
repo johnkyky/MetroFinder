@@ -12,9 +12,11 @@ all: $(_OBJ)
 	$(cc) $(headers) $(CFLAGS) $(_OBJ) -o MetroFinder
 	./MetroFinder
 
-$(objdir)/%.o: src/%.cpp
+$(objdir)/%.o: src/%.cpp $(objdir)
 	$(cc) -c $(headers) $(CFLAGS) $< -o $@	
 
+$(objdir) :
+	mkdir $(objdir)
 
 clear:
 	rm MetroFinder
