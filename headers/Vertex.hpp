@@ -11,15 +11,28 @@
 class Vertex
 {
 private:
-	std::string name;
-	unsigned int id;
 	std::list<Edge> edges;
+	std::string name;
+	std::string line;
+	unsigned int id;
 
 public:
-	Vertex(const std::string name, const unsigned int id);
+	Vertex();
+	Vertex(const std::string name, const unsigned int id, const std::string line = "Undefined");
 	~Vertex();
 
-	void add_edge(const unsigned int source, const unsigned int destination, const unsigned int time);
+	std::list<Edge>& getEdges();
 
-	void render();
+	unsigned int getId();
+	void setId(const unsigned int val);
+
+	std::string getLine();
+	void setLine(const std::string val);
+	std::string getName();
+	void setName(std::string val);
+
+	void add_edge(const unsigned int source, const unsigned int destination, const unsigned int duration, bool isMetro = true);
+	void add_edge(Edge val);
+
+	void print();
 };

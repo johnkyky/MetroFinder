@@ -1,5 +1,9 @@
 #include "Graph.hpp"
 
+Graph::Graph(std::string fileName)
+{
+	load_from_file(fileName);
+}
 
 Graph::Graph()
 {
@@ -9,31 +13,115 @@ Graph::Graph()
 
 Graph::~Graph()
 {
-	
+	 
+}
+
+int Graph::load_from_file(std::string fileName)
+{
+	std::ifstream fileStream;
+	char buffer = ' ';
+	int readint;
+	std::string readString;
+
+	fileStream.open(fileName);
+	if (fileStream.fail() || !fileStream.is_open())
+        throw std::runtime_error("Cannot open file \"" + fileName +"\"");
+	fileStream >> buffer;
+	while (!fileStream.eof() && buffer != 'E') 
+	{
+		Vertex read;
+
+		fileStream >> readint;
+		read.setId(readint);
+		if (buffer == 'T') 
+		{
+			fileStream >> readString;
+			read.setLine(readString);
+		}
+		fileStream.get();
+		std::getline(fileStream, readString);
+		read.setName(readString);
+		vertices.emplace(read.getId(), read);
+		fileStream >> buffer;
+	}
+	while (!fileStream.eof()) 
+	{
+		Edge read;
+		int foo;
+
+		fileStream >> readint;
+		read.setSource(readint);
+		fileStream >> readint;
+		read.setDestination(readint);
+		if (vertices[read.getDestination()].getName() == vertices[read.getSource()].getName())
+			read.setMetro(false);
+		fileStream >> readint;
+		read.setDuration(readint);
+		vertices[read.getSource()].add_edge(read);
+		foo = read.getSource();
+		read.setSource(read.getDestination());
+		read.setDestination(foo);
+		vertices[read.getSource()].add_edge(read);
+		fileStream >> buffer;
+	}
+	load_line();
+	return 1;
+}
+
+void Graph::load_line()
+{
+	std::stack<unsigned int> to_treat;
+
+	for (auto& station : vertices)
+	{
+		if (station.second.getLine() == "")
+			continue;
+		to_treat.push(station.second.getId());
+		while (!to_treat.empty())
+		{
+			Vertex& buffer = vertices[to_treat.top()];
+			to_treat.pop(); 
+			for (auto& e : buffer.getEdges())
+			{
+				if (e.getMetro() == false || vertices[e.getDestination()].getLine() != "")
+					continue;
+				vertices[e.getDestination()].setLine(buffer.getLine());
+				to_treat.push(e.getDestination());
+			}
+		}
+	}
+}
+
+int Graph::add_vertex(const std::string name, const unsigned int id, std::string line)
+{
+	auto temp = vertices.find(id);
+
+	if (temp != vertices.end()) {
+		std::cout << "[ERROR] : Cannot insert vertex %s with id %i in graph %s" << std::endl;
+		std::cout << "\tA vertex with the same id already exist" << std::endl;
+		return 0;
+	}
+	vertices.insert(std::pair<int, Vertex>(id, Vertex(name, id, line)));
+	return 1;
 }
 
 
-void Graph::add_vertex(const std::string name, const unsigned int id)
-{
-	vertices.insert(std::pair<int, Vertex>(id, Vertex(name, id)));
-}
+int Graph::add_edge(const unsigned int id1, const unsigned int id2, const unsigned int duration, bool isMetro)
+{	
+	auto i = vertices.find(id1);
+	auto j = vertices.find(id2);
 
-
-void Graph::add_edge(const unsigned int id1, const unsigned int id2, const unsigned int time)
-{
-	std::map<unsigned int, Vertex>::iterator i;
-	std::map<unsigned int, Vertex>::iterator j;
-	
-	i = vertices.find(id1);
-	j = vertices.find(id2);
-
-	if(i == vertices.end() || j == vertices.end())
-		std::cout << "invalite id" << std::endl;
+	if(i == vertices.end() || j == vertices.end()) {
+		std::cout << "[ERROR] : Cannot create an edge between id %i and %i\n" << std::endl;
+		std::cout << "\tOne of the vertices doesn't exist\n" << std::endl;
+		return 0;
+	}
 	else
 	{
-		vertices.find(id1)->second.add_edge(id1, id2, time);
-		vertices.find(id2)->second.add_edge(id2, id1, time);
+		i->second.add_edge(id1, id2, duration, isMetro);
+		j->second.add_edge(id2, id1, duration, isMetro);
 	}
+	return 1;
 }
 
 
@@ -41,5 +129,5 @@ void Graph::render()
 {
 	std::cout << vertices.size() << std::endl;
 	for(auto &i : vertices)
-		i.second.render();
+		i.second.print();
 }
