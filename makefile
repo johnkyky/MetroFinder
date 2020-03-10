@@ -1,26 +1,21 @@
-objets = main.o Graph.o Vertex.o Edge.o
+cc = g++
+headers = -Iheaders
+CFLAGS = -Wall -Werror -g
+SFFLAGS = -lsfml-system -lsfml-window -lsfml-graphics -lsfml-audio
 
-all: $(objets)
-	g++ $(objets)
-	./a.out
-
-
-main.o: main.cpp
-	g++ -c -o main.o main.cpp
-
-
-Graph.o: Graph.cpp Graph.h
-	g++ -c -o Graph.o Graph.cpp
+objdir = obj
+OBJ = main.o Graph.o Vertex.o Edge.o
+_OBJ = $(patsubst %,$(objdir)/%,$(OBJ))
 
 
-Vertex.o: Vertex.cpp Vertex.h
-	g++ -c -o Vertex.o Vertex.cpp
+all: $(_OBJ)
+	$(cc) $(headers) $(CFLAGS) $(_OBJ) -o MetroFinder
+	./MetroFinder
 
-
-Edge.o: Edge.cpp Edge.h
-	g++ -c -o Edge.o Edge.cpp
+$(objdir)/%.o: src/%.cpp
+	$(cc) -c $(headers) $(CFLAGS) $< -o $@	
 
 
 clear:
-	rm a.out
-	rm *.o
+	rm MetroFinder
+	rm obj/*
