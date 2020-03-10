@@ -1,4 +1,4 @@
-#include "Vertex.h"
+#include "Vertex.hpp"
 
 
 Vertex::Vertex(std::string name, unsigned int id)

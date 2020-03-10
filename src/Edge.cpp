@@ -1,4 +1,4 @@
-#include "Edge.h"
+#include "Edge.hpp"
 
 
 Edge::Edge(const unsigned int source, const unsigned int destination, const unsigned int time)
