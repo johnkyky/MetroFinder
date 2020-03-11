@@ -7,7 +7,10 @@
 int main()
 {
     Graph graph;
-    //graph.load_from_file("metro.txt");
+    
+    graph.load_from_file("metro.txt");
+    graph.dijkstra(0, 111);
+
 
     /*graph.add_vertex("nbr0", 0);
     graph.add_vertex("nbr1", 1);
@@ -20,9 +23,12 @@ int main()
     graph.add_edge(0, 4, 6);
     graph.add_edge(1, 2, 3);
     graph.add_edge(1, 3, 4);
-    graph.add_edge(2, 4, 1);*/
+    graph.add_edge(2, 4, 1);
 
-    graph.add_vertex("nbr0", 0);
+    graph.dijkstra(4, 3);*/
+
+
+    /*graph.add_vertex("nbr0", 0);
     graph.add_vertex("nbr1", 1);
     graph.add_vertex("nbr2", 2);
     graph.add_vertex("nbr3", 3);
@@ -40,11 +46,13 @@ int main()
     graph.add_edge(3, 5, 7);
     graph.add_edge(4, 5, 3);
 
+    graph.dijkstra(0, 5);*/
 
 
-    graph.render();
 
-    graph.dijkstra(0, 3);
+
+    //graph.render();
+
 
     return 0;
 }

@@ -5,6 +5,7 @@
 #include <fstream>
 #include <map>
 #include <stack>
+#include <climits>
 
 
 #include "Vertex.hpp"
@@ -32,5 +33,7 @@ public:
 	void render();
 private:
 	void load_line();
-
+	std::list<Edge> dijkstra_find_valid_edge(const unsigned int id, const std::vector<unsigned int> &V);
+	unsigned int dijkstra_find_indice_min_distance(unsigned int *d, const std::vector<unsigned int> &V);
+	std::list<Vertex> dijkstra_get_path(const unsigned int idSource, const unsigned int idDestintion, const unsigned int *pere);
 };

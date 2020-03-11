@@ -12,8 +12,11 @@ all: $(_OBJ)
 	$(cc) $(headers) $(CFLAGS) $(_OBJ) -o MetroFinder
 	./MetroFinder
 
+run:
+	./MetroFinder
+
 $(objdir)/%.o: src/%.cpp $(objdir)
-	$(cc) -c $(headers) $(CFLAGS) $< -o $@	
+	$(cc) -c $(headers) $(CFLAGS) $(SFFLAGS) $< -o $@	
 
 $(objdir) :
 	mkdir $(objdir)
