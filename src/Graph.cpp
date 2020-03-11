@@ -68,6 +68,7 @@ int Graph::load_from_file(std::string fileName)
 	return 1;
 }
 
+
 void Graph::load_line()
 {
 	std::stack<unsigned int> to_treat;
@@ -91,6 +92,9 @@ void Graph::load_line()
 			}
 		}
 	}
+}
+	res.push_front(vertices.find(idSource)->second);
+	return res;
 }
 
 std::map<unsigned int, Vertex>& Graph::getVertices()
@@ -129,6 +133,121 @@ int Graph::add_edge(const unsigned int id1, const unsigned int id2, const unsign
 	}
 	return 1;
 }
+
+void Graph::dijkstra(unsigned int idSource, unsigned int idDestintion)
+{
+	////VARIABLE
+	unsigned int distance[vertices.size()];
+	unsigned int pere[vertices.size()];
+	std::vector<unsigned int> V;
+
+	///INITIALISATION
+	for (unsigned int i = 0; i < vertices.size(); ++i)
+	{
+		distance[i] = UINT_MAX;
+		pere[i] = UINT_MAX;
+	}
+	V.push_back(idSource);
+
+	distance[idSource] = 0;
+	std::list<Edge> edges = dijkstra_find_valid_edge(idSource, V);
+	for (auto i = edges.begin(); i != edges.end(); ++i)
+	{
+		distance[i->getDestination()] = i->getDuration();
+		pere[i->getDestination()] = i->getSource();
+	}
+
+	///BOUCLE PRINCIPAL
+	while(V.size() < vertices.size())
+	{
+		unsigned int indice_min = dijkstra_find_indice_min_distance(distance, V);
+		V.push_back(indice_min);
+
+		std::list<Edge> edges = dijkstra_find_valid_edge(indice_min, V);
+
+		for (auto i = edges.begin(); i != edges.end(); ++i)
+		{
+			unsigned int new_duration = distance[indice_min] + i->getDuration();
+			unsigned int old_duration = distance[i->getDestination()];
+
+			if(new_duration < old_duration)
+			{
+				distance[i->getDestination()] = new_duration;
+				pere[i->getDestination()] = indice_min;
+			}
+		}
+	}
+
+	std::list<Vertex> test = dijkstra_get_path(idSource, idDestintion, pere);
+
+	printf("\n");
+	for (auto i = test.begin(); i != test.end(); ++i)
+	{
+		printf("-> %u ", i->getId());
+	}
+	printf("\n\n");
+}
+
+
+std::list<Edge> Graph::dijkstra_find_valid_edge(const unsigned int id, const std::vector<unsigned int> &V)
+{
+	std::list<Edge> res;
+	std::list<Edge> buffer;
+
+	auto it = vertices.find(id);
+  	if (it == vertices.end())
+   		throw std::runtime_error("Cannot find id" + id);
+
+	buffer = it->second.getEdges();
+	for (auto i = buffer.begin(); i != buffer.end(); ++i)
+	{
+		bool valid = true;
+		for (unsigned int j = 0; j < V.size(); ++j)
+			if(i->getDestination() == V[j])
+				valid = false;
+
+		if(valid)
+			res.push_front(*i);
+	}
+
+	return res;
+}
+
+
+unsigned int Graph::dijkstra_find_indice_min_distance(unsigned int *d, const std::vector<unsigned int> &V)
+{
+	unsigned int min = UINT_MAX, indice_min = 0;
+	for (unsigned int i = 0; i < vertices.size(); ++i)
+	{
+		bool valid = true;
+		for (unsigned int j = 0; j < V.size(); ++j)
+			if(i == V[j])
+				valid = false;
+		if(valid)
+		{
+			if(min > d[i] && d[i] > 0)
+			{
+				indice_min = i;
+				min = d[i];
+			}
+		}
+	}
+	return indice_min;
+}
+
+
+std::list<Vertex> Graph::dijkstra_get_path(const unsigned int idSource, const unsigned int idDestintion, const unsigned int *pere)
+{
+	std::list<Vertex> res;
+
+	res.push_front(vertices.find(idDestintion)->second);
+	unsigned int indice = pere[idDestintion];
+
+	while(indice != idSource)
+	{
+		res.push_front(vertices.find(indice)->second);
+		indice = pere[indice];
+	}
 
 
 void Graph::render()
