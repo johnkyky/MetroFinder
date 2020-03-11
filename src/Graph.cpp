@@ -99,13 +99,13 @@ void Graph::dijkstra(unsigned int source, unsigned int destination)
 	
 
 	////VARIABLE
-	unsigned int d[5];
-	unsigned int pere[5];
+	unsigned int d[6];
+	unsigned int pere[6];
 	std::vector<unsigned int> V;
 
 
 	///INITIALISATION
-	for (int i = 0; i < 5; ++i)
+	for (int i = 0; i < 6; ++i)
 	{
 		d[i] = 100;
 		pere[i] = 100;
@@ -122,13 +122,13 @@ void Graph::dijkstra(unsigned int source, unsigned int destination)
 
 	
 	///affichage
-	for (int i = 0; i < 5; ++i)
+	for (int i = 0; i < 6; ++i)
 		printf("%4d ", i);
 	printf("\n");
-	for (int i = 0; i < 5; ++i)
+	for (int i = 0; i < 6; ++i)
 		printf("%4d ", d[i]);
 	printf("\n");
-	for (int i = 0; i < 5; ++i)
+	for (int i = 0; i < 6; ++i)
 		printf("%4d ", pere[i]);
 	printf("\n");
 	for (auto i = V.begin(); i != V.end(); ++i)
@@ -137,11 +137,11 @@ void Graph::dijkstra(unsigned int source, unsigned int destination)
 
 
 	///BOUCLE PRINCIPAL
-	while(V.size() < 5)
+	while(V.size() < 6)
 	{
 		///on cherche le d min dans le tableau d en excluant les element dans V
 		unsigned int min = 100000, indice_min = 0;
-		for (unsigned int i = 0; i < 5; ++i)
+		for (unsigned int i = 0; i < 6; ++i)
 		{
 			bool valid = true;
 			for (unsigned int j = 0; j < V.size(); ++j)
@@ -181,13 +181,13 @@ void Graph::dijkstra(unsigned int source, unsigned int destination)
 		}
 
 		///affichage
-		for (int i = 0; i < 5; ++i)
+		for (int i = 0; i < 6; ++i)
 			printf("%4d ", i);
 		printf("\n");
-		for (int i = 0; i < 5; ++i)
+		for (int i = 0; i < 6; ++i)
 			printf("%4d ", d[i]);
 		printf("\n");
-		for (int i = 0; i < 5; ++i)
+		for (int i = 0; i < 6; ++i)
 			printf("%4d ", pere[i]);
 		printf("\n");
 		for (auto i = V.begin(); i != V.end(); ++i)
