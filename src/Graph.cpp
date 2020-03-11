@@ -92,6 +92,113 @@ void Graph::load_line()
 	}
 }
 
+
+void Graph::dijkstra(unsigned int source, unsigned int destination)
+{
+	std::cout << "---------------Dijkstra---------------" << std::endl;
+	
+
+	////VARIABLE
+	unsigned int d[5];
+	unsigned int pere[5];
+	std::vector<unsigned int> V;
+
+
+	///INITIALISATION
+	for (int i = 0; i < 5; ++i)
+	{
+		d[i] = 100;
+		pere[i] = 100;
+	}
+
+	d[source] = 0;
+	std::list<Edge> edges = vertices.find(source)->second.getEdges();
+	for (auto i = edges.begin(); i != edges.end(); ++i)
+	{
+		d[i->getDestination()] = i->getDuration();
+		pere[i->getDestination()] = i->getSource();
+	}
+	V.push_back(source);
+
+	for (int i = 0; i < 5; ++i)
+		printf("%4d ", i);
+	printf("\n");
+	for (int i = 0; i < 5; ++i)
+		printf("%4d ", d[i]);
+	printf("\n");
+	for (int i = 0; i < 5; ++i)
+		printf("%4d ", pere[i]);
+	printf("\n");
+	for (auto i = V.begin(); i != V.end(); ++i)
+		printf("%4d ", *i);
+	printf("\n\n");
+
+
+	///BOUCLE PRINCIPAL
+	while(V.size() < 5)
+	{
+		///on cherche le d min dans le tableau d en excluant les element dans V
+		unsigned int min = 100000, indice_min = 0;
+		for (unsigned int i = 0; i < 5; ++i)
+		{
+			bool valid = true;
+			for (unsigned int j = 0; j < V.size(); ++j)
+				if(i == V[j])
+					valid = false;
+			if(valid)
+			{
+				if(min > d[i] && d[i] > 0)
+				{
+					indice_min = i;
+					min = d[i];
+				}
+			}
+		}
+		V.push_back(indice_min);
+
+		std::list<Edge> edges = vertices.find(indice_min)->second.getEdges();
+		for (auto i = edges.begin(); i != edges.end(); ++i)
+		{
+			bool valid = true;
+			for (unsigned int j = 0; j < V.size(); ++j)
+			{
+				if(i->getDestination() == V[j])
+					valid = false;
+			}
+			if(valid)
+			{
+				//std::cout << "valid " << i->getDestination() << std::endl;
+				unsigned int new_duration = d[indice_min] + i->getDuration();
+				unsigned int old_duration = d[i->getDestination()];
+
+				//printf("new = %d | hold = %d\n", new_duration, old_duration);
+
+				if(new_duration < old_duration)
+				{
+					d[i->getDestination()] = new_duration;
+					pere[i->getDestination()] = indice_min;
+				}
+			}
+		}
+
+		///affichage
+		for (int i = 0; i < 5; ++i)
+			printf("%4d ", i);
+		printf("\n");
+		for (int i = 0; i < 5; ++i)
+			printf("%4d ", d[i]);
+		printf("\n");
+		for (int i = 0; i < 5; ++i)
+			printf("%4d ", pere[i]);
+		printf("\n");
+		for (auto i = V.begin(); i != V.end(); ++i)
+			printf("%4d ", *i);
+		printf("\n\n");
+	}
+}
+
+
+
 int Graph::add_vertex(const std::string name, const unsigned int id, std::string line)
 {
 	auto temp = vertices.find(id);

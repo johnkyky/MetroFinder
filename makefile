@@ -1,6 +1,6 @@
 cc = g++
 headers = -Iheaders
-CFLAGS = -Wall -Werror -g
+CFLAGS = -Wall -g
 SFFLAGS = -lsfml-system -lsfml-window -lsfml-graphics -lsfml-audio
 
 objdir = obj
