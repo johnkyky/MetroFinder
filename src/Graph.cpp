@@ -93,9 +93,6 @@ void Graph::load_line()
 		}
 	}
 }
-	res.push_front(vertices.find(idSource)->second);
-	return res;
-}
 
 std::map<unsigned int, Vertex>& Graph::getVertices()
 {
@@ -248,6 +245,9 @@ std::list<Vertex> Graph::dijkstra_get_path(const unsigned int idSource, const un
 		res.push_front(vertices.find(indice)->second);
 		indice = pere[indice];
 	}
+	res.push_front(vertices.find(idSource)->second);
+	return res;
+}
 
 
 void Graph::render()
