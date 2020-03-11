@@ -3,6 +3,7 @@
 #include "Graph.hpp"
 #include <map>    
 #include <fstream>
+#include <math.h>
 
 float mapTo(float a, float b, float c, float d, float val)
 {
@@ -21,8 +22,8 @@ std::map<std::string, sf::Vector2f> load_positions(std::string fileName)
 
         f >> x;
         f >> y;
-        x = mapTo(643375, 660280, 200, 1500, x);
-        y = mapTo(6853445, 6871957, 0, 1000, y);
+        x = mapTo(643375, 665000, 50, 1500, x);
+        y = mapTo(6853445, 6873000, 950, 0, y);
         f.get();
         getline(f, nom);
         res.insert(std::pair<std::string, sf::Vector2f>(nom, sf::Vector2f(x, y)));
@@ -46,10 +47,10 @@ int main()
     auto& vertices = graph.getVertices();
     std::cout << "Position : " << mappotron["Abbesses"].x << " " << mappotron["Abbesses"].y << std::endl;
     std::map<std::string, sf::Color> couleur;
-    couleur["1"] = sf::Color::Blue;
+    couleur["1"] = sf::Color::Red;
     couleur["2"] = sf::Color::Yellow;
     couleur["3"] = sf::Color::Red;
-    couleur["3b"] = sf::Color::Cyan;
+    couleur["3b"] = sf::Color::Red;
     couleur["4"] = sf::Color::White;
     couleur["5"] = sf::Color::Green;
     couleur["6"] = sf::Color::Magenta;
@@ -61,9 +62,11 @@ int main()
     couleur["11"] = sf::Color(125,0, 255);
     couleur["12"] = sf::Color(255,125, 0);
     couleur["13"] = sf::Color(20,255, 125);
-    couleur["14"] = sf::Color(50,100, 255);
+    couleur["14"] = sf::Color::Blue;
     while (window.isOpen())
     {
+
+        sf::Vector2i posmouse = sf::Mouse::getPosition(window);
         sf::Event evt;
 
         while (window.pollEvent(evt))
@@ -72,11 +75,6 @@ int main()
                 window.close();
         }
         window.clear();
-        for (auto& i : mappotron)
-        {
-            station.setPosition(i.second);
-            window.draw(station);
-        }
         for (auto& station : vertices)
         {
             for (auto& connexion : station.second.getEdges())
@@ -91,11 +89,18 @@ int main()
                 {
                     sf::Vertex(posa, couleur[station.second.getLine()]),
                     sf::Vertex(posb, couleur[station.second.getLine()])
-                };/*
-                std::cout << line[1].position.x << " " << line[1].position.y << std::endl;
-                std::cout << line[1].position.x << " " << line[1].position.y << std::endl;*/
+                };
                 window.draw(line, 2, sf::Lines);
             }
+        }
+        for (auto& i : mappotron)
+        {
+            station.setPosition(i.second);
+            window.draw(station);
+        }
+        for (auto& station : mappotron) {
+            if (sqrt(pow(station.second.x - posmouse.x, 2) + pow(station.second.y - posmouse.y, 2)) <= 4)
+                std::cout << "Ciblé : " << station.first << std::endl;
         }
         window.display();
     }
