@@ -120,6 +120,8 @@ void Graph::dijkstra(unsigned int source, unsigned int destination)
 	}
 	V.push_back(source);
 
+	
+	///affichage
 	for (int i = 0; i < 5; ++i)
 		printf("%4d ", i);
 	printf("\n");
@@ -167,11 +169,8 @@ void Graph::dijkstra(unsigned int source, unsigned int destination)
 			}
 			if(valid)
 			{
-				//std::cout << "valid " << i->getDestination() << std::endl;
 				unsigned int new_duration = d[indice_min] + i->getDuration();
 				unsigned int old_duration = d[i->getDestination()];
-
-				//printf("new = %d | hold = %d\n", new_duration, old_duration);
 
 				if(new_duration < old_duration)
 				{
