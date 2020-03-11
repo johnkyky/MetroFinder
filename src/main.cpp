@@ -1,10 +1,11 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include "Graph.hpp"
+#include "GraphDrawer.hpp"
 #include <map>    
 #include <fstream>
 #include <math.h>
-
+/*
 float mapTo(float a, float b, float c, float d, float val)
 {
     return ( (val - a) / (b - a)) * (d - c) + c;
@@ -31,14 +32,7 @@ std::map<std::string, sf::Vector2f> load_positions(std::string fileName)
     f.close();
     return res;
 }
-
-int main()
-{
-    Graph graph;
-    graph.load_from_file("metro.txt");
-    graph.render();
-
-    std::map<std::string, sf::Vector2f> mappotron = load_positions("positions.txt");
+  std::map<std::string, sf::Vector2f> mappotron = load_positions("positions.txt");
     sf::RenderWindow window(sf::VideoMode(1500, 1000), "MetroFinder");
     sf::CircleShape station;
     station.setFillColor(sf::Color::Red);
@@ -103,6 +97,14 @@ int main()
                 std::cout << "Ciblé : " << station.first << std::endl;
         }
         window.display();
-    }
+    }*/
+
+int main()
+{
+    Graph graph;
+    graph.load_from_file("metro.txt");
+    
+    GraphDrawer my_draw(graph, "positions.txt");
+    my_draw.display();
     return 0;
 }
