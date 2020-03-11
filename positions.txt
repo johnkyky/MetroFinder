@@ -1,0 +1,297 @@
+651450 6865157 Abbesses
+650605 6858892 Alésia
+655577 6861986 Alexandre Dumas
+648720 6862975 Alma Marceau
+647575 6866023 Anatole France
+651901 6864961 Anvers
+647875 6864187 Argentine
+652809 6863002 Arts et Métiers
+650184 6862520 Assemblée Nationale
+655451 6867256 Aubervilliers-Pantin, Quatre Chemins
+648294 6861006 Avenue Émile Zola
+655847 6861443 Avron
+647016 6859784 Place Balard
+652377 6865061 Barbès Rochechouart
+653069 6870918 Basilique de Saint-Denis
+653722 6861567 Bastille
+656031 6860310 Bel Air
+654272 6863716 Belleville
+658110 6860754 Bérault
+654488 6860216 Bercy
+654173 6859063 Bibliothèque François Mitterand
+644111 6859387 Billancourt
+647854 6861779 Bir-Hakeim
+651007 6865090 Blanche
+659624 6867516 Bobigny, Pablo Picasso
+657866 6866314 Bobigny-Pantin, Raymond Queneau
+647920 6863229 Boissière
+654101 6864716 Bolivar
+652357 6863545 Bonne Nouvelle
+655197 6864558 Botzaris
+647739 6860352 Boucicaut
+644140 6860487 Boulogne, Jean Jaurès
+643379 6860354 Boulogne, Pont de Saint-Cloud, Rond Point Rhin et Danube
+651638 6863387 Bourse
+653790 6861974 Bréguet-Sabin
+650152 6865834 Brochant
+654646 6864455 Buttes Chaumont
+656047 6861475 Buzenval
+651894 6864185 Cadet
+648848 6861055 Cambronne
+652936 6859685 Campo-Formio
+652418 6860930 Cardinal Lemoine
+651875 6869043 Carrefour Pleyel
+652421 6860244 Censier Daubenton
+649644 6863316 Champs Élysées, Clémenceau
+646165 6860823 Chardon Lagâche
+656955 6858108 Charenton-Écoles
+648357 6864133 Charles de Gaulle, Étoile
+647602 6860958 Charles Michels
+654915 6861791 Charonne
+658934 6860635 Château de Vincennes
+652765 6863793 Château d'Eau
+652313 6865459 Château Rouge
+653220 6864472 Château Landon
+652112 6862283 Châtelet
+648717 6856968 Châtillon-Montrouge
+651109 6863882 Chaussée d'Antin, La Fayette
+653637 6862117 Chemin Vert
+653618 6859618 Chevaleret
+652110 6861853 Cité
+651882 6861423 Cluny, La Sorbonne
+653853 6864360 Colonel Fabien
+648184 6860759 Commerce
+650332 6863130 Concorde
+648373 6859925 Convention
+647098 6858799 Corentin Celton
+652314 6859055 Corvisart
+654975 6859429 Cour Saint-Émilion
+654727 6866269 Corentin-Cariou
+648920 6864580 Courcelles
+654559 6863407 Couronnes
+659557 6855325 Créteil-l'Echat, Hôpital Henri Mondor
+660274 6853449 Créteil-Préfecture
+659626 6854573 Créteil-Université
+654342 6865822 Crimée
+658586 6862140 Croix de Chavaux
+655517 6864828 Danube
+655682 6860102 Daumesnil
+650946 6859474 Denfert Rochereau
+655199 6860061 Dugommier
+648164 6861387 Dupleix
+649877 6860988 Duroc
+649085 6861851 École Militaire
+657584 6857348 École Vétérinaire de Maisons-Alfort
+650560 6860279 Edgar Quinet
+646365 6861038 Église d'Auteuil
+656983 6866076 Église de Pantin
+644853 6865665 Esplanade de la Défense
+652232 6862839 Étienne Marcel
+650294 6864519 Europe
+645692 6860576 Exelmans
+654803 6861302 Faidherbe-Chaligny
+649937 6860708 Falguière
+648032 6860533 Félix Faure
+653536 6862767 Filles du Calvaire
+656349 6868493 Fort d'Aubervilliers
+649200 6863532 Franklin D. Roosevelt
+648308 6868719 Gabriel Péri, Asnières-Gennevilliers
+650272 6860056 Gaité
+657208 6862970 Galliéni
+655909 6862933 Gambetta
+653409 6860453 Gare d'Austerlitz
+652903 6864188 Gare de l'Est
+653985 6860620 Gare de Lyon
+652842 6864584 Gare du Nord
+651021 6867551 Garibaldi
+648695 6863783 George V
+651808 6859208 Glacière
+653867 6863509 Goncourt
+644056 6866068 Grande Arche de la Défense
+651819 6863697 Rue Montmartre, Grands Boulevards
+651819 6863697 Rue Montmartre, Grands Boulevards
+650686 6866079 Guy Môquet
+650676 6863931 Havre Caumartin
+656178 6865857 Hoche
+652424 6862133 Hôtel de Ville
+648219 6862983 Iéna
+649665 6862700 Invalides
+653129 6863610 Jacques Bonsergent
+646300 6861634 Jasmin
+653816 6864793 Jaurès
+646993 6860918 Javel
+655215 6864072 Jourdain
+651949 6866025 Jules Joffrin
+652659 6860872 Jussieu
+648179 6863746 Kléber
+653102 6865121 La Chapelle
+656807 6869139 La Courneuve, 8 Mai 1945
+650560 6865452 La Fourche
+648507 6861263 La Motte Picquet, Grenelle
+646744 6862246 La Muette
+649415 6862186 La Tour-Maubourg
+651514 6865721 Lamarck Caulaincourt
+654509 6865201 Laumière
+653166 6856862 Le Kremlin-Bicêtre
+651606 6864075 Le Peletier
+654219 6861429 Ledru Rollin
+652479 6859729 Les Gobelins
+651995 6862675 Les Halles
+646587 6864821 Les Sablons
+656445 6858608 Liberté
+650644 6864612 Liège
+653446 6864786 Louis Blanc
+647797 6865646 Louise Michel
+647352 6860118 Lourmel
+651659 6862510 Louvre, Rivoli
+651241 6861647 Mabillon
+650498 6863553 Madeleine
+649119 6867260 Mairie de Clichy
+659011 6862579 Mairie de Montreuil
+651180 6868203 Mairie de Saint-Ouen
+657204 6864574 Mairie des Lilas
+646628 6858473 Mairie d'Issy
+654730 6856958 Mairie d'Ivry
+652898 6858233 Maison Blanche
+659377 6855982 Maisons-Alfort les Juilliottes
+658470 6856712 Maisons-Alfort, Stade
+648493 6858287 Malakoff-Plateau de Vanves
+648384 6857479 Malakoff-Rue Étienne Dolet
+649329 6864986 Malesherbes
+656420 6861573 Maraîchers
+652326 6865913 Marcadet Poissonniers
+644494 6859561 Marcel Sembat
+653072 6865798 Marx Dormoy
+652159 6861318 Maubert Mutualité
+654766 6863151 Ménilmontant
+656131 6859840 Michel Bizot
+645995 6861124 Michel Ange Auteuil
+645812 6860831 Michel Ange Molitor
+646631 6861033 Mirabeau
+649727 6863961 Miromesnil
+649356 6864714 Monceau
+655238 6860658 Montgallet
+650417 6860627 Montparnasse Bienvenue
+650794 6859215 Mouton-Duvernet
+655635 6860984 Nation
+653230 6859429 Nationale
+651437 6864204 Notre Dame de Lorette
+650740 6860753 Notre-Dame-des-Champs
+653672 6862929 Oberkampf
+651550 6861565 Odéon
+651030 6863591 Opéra
+655046 6865410 Ourcq
+651322 6862684 Palais Royal, Musée du Louvre
+654119 6862984 Parmentier
+647599 6862172 Passy
+649566 6860512 Pasteur
+656101 6863323 Pelleport
+655072 6862688 Père Lachaise
+648500 6865216 Péreire
+649944 6859536 Pernety
+655224 6862221 Philippe-Auguste
+656061 6860724 Picpus
+654273 6857498 Pierre Curie
+651399 6864912 Pigalle
+650664 6865076 Place de Clichy
+655484 6864258 Place des Fêtes
+652734 6859178 Place d'Italie
+652458 6860508 Place Monge
+649651 6859304 Plaisance
+652275 6864332 Poissonnière
+647199 6866665 Pont de Levallois, Bécon
+645771 6865220 Pont de Neuilly
+643533 6859121 Pont de Sèvres
+652830 6861696 Pont-Marie
+651740 6862259 Pont-Neuf
+646973 6863736 Porte Dauphine
+645530 6861137 Porte d'Auteuil
+656572 6862893 Porte de Bagnolet
+648124 6865319 Porte de Champerret
+656063 6859401 Porte de Charenton
+653341 6857945 Porte de Choisy
+649686 6866246 Porte de Clichy
+651967 6866577 Porte de Clignancourt
+653042 6866550 Porte de la Chapelle
+654948 6866551 Porte de la Villette
+656753 6861662 Porte de Montreuil
+655425 6865559 Porte de Pantin
+645474 6860024 Porte de Saint-Cloud
+650801 6866583 Porte de Saint-Ouen
+649017 6858862 Porte de Vanves
+647736 6859390 Porte de Versailles
+656712 6860952 Porte de Vincennes
+656487 6864284 Porte des Lilas
+652986 6857875 Porte d'Italie
+653692 6858106 Porte d'Ivry
+656353 6859579 Porte Dorée
+650484 6858361 Porte d'Orléans
+647425 6864409 Porte Maillot
+655919 6864610 Pré-Saint-Gervais
+651156 6863081 Pyramides
+654914 6863937 Pyrénées
+653965 6859849 Quai de la Gare
+653463 6860906 Quai de la Rapée
+651309 6863489 Quatre Septembre
+652568 6862547 Rambuteau
+646445 6861964 Ranelagh
+650879 6860087 Raspail
+652497 6863088 Réaumur Sébastopol
+650670 6861145 Rennes
+653341 6863202 République
+654966 6860982 Reuilly Diderot
+653918 6862388 Richard Lenoir
+651517 6863732 Richelieu Drouot
+654111 6865543 Riquet
+657662 6861898 Robespierre
+650225 6864904 Rome
+647041 6862902 Rue de la Pompe
+655193 6861537 Rue des Boulets
+650525 6861935 Rue du Bac
+654574 6862851 Rue Saint-Maur
+654126 6862513 Saint-Ambroise
+650224 6864051 Saint-Augustin
+652817 6870188 Saint-Denis-Porte de Paris
+653454 6871952 Saint-Denis-Université
+656320 6863729 Saint-Fargeau
+649691 6861485 Saint-Francois Xavier
+651418 6864471 Saint-Georges
+651115 6861726 Saint-Germain-des-Prés
+651342 6859409 Saint-Jacques
+650478 6864137 Saint-Lazare
+657397 6860858 Saint-Mandé, Tourelle
+653096 6860009 Saint-Marcel
+651812 6861659 Saint-Michel
+653110 6861878 Saint-Paul, Le Marais
+649391 6863821 Saint-Philippe du Roule
+650596 6860970 Saint-Placide
+653574 6862534 Saint-Sébastien-Froissart
+650928 6861500 Saint-Sulpice
+649173 6861003 Ségur
+652135 6863229 Sentier
+650577 6861450 Sèvres Babylone
+649328 6860842 Sèvres Lecourbe
+652178 6866190 Simplon
+650340 6862266 Solférino
+653499 6865121 Stalingrad
+652657 6863438 Strasbourg Saint-Denis
+653182 6861433 Sully Morland
+655909 6864107 Télégraphe
+653163 6863151 Temple
+648536 6864446 Ternes
+652812 6858677 Tolbiac
+651045 6864240 Trinité d'Estienne d'Orves
+647636 6862796 Trocadéro
+650857 6862910 Tuileries
+650191 6861189 Vaneau
+649744 6862088 Varenne
+648703 6860168 Vaugirard
+650754 6860450 Vavin
+647576 6863545 Victor Hugo
+653285 6856256 Villejuif, Léo Lagrange
+653552 6854350 Villejuif, Louis Aragon
+653595 6855341 Villejuif, P. Vaillant Couturier
+649776 6864788 Villiers
+649208 6860384 Volontaires
+654562 6862113 Voltaire
+649009 6865090 Wagram

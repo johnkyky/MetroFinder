@@ -22,7 +22,7 @@ V 0020 Belleville
 V 0021 Belleville
 V 0022 Bercy
 V 0023 Bercy
-V 0024 Bibliothèque François Mitterand
+T 0024 14 Bibliothèque François Mitterand
 V 0025 Billancourt
 V 0026 Bir-Hakeim
 V 0027 Blanche
@@ -325,7 +325,7 @@ V 0323 Saint-Germain-des-Prés
 V 0324 Saint-Jacques
 V 0325 Saint-Lazare
 V 0326 Saint-Lazare
-T 0327 14 Saint-Lazare
+V 0327 Saint-Lazare
 V 0328 Saint-Mandé, Tourelle
 V 0329 Saint-Marcel
 V 0330 Saint-Michel

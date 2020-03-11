@@ -81,6 +81,7 @@ void Graph::load_line()
 		while (!to_treat.empty())
 		{
 			Vertex& buffer = vertices[to_treat.top()];
+			
 			to_treat.pop(); 
 			for (auto& e : buffer.getEdges())
 			{
@@ -92,7 +93,46 @@ void Graph::load_line()
 		}
 	}
 }
+	res.push_front(vertices.find(idSource)->second);
+	return res;
+}
 
+std::map<unsigned int, Vertex>& Graph::getVertices()
+{
+	return vertices;
+}
+
+int Graph::add_vertex(const std::string name, const unsigned int id, std::string line)
+{
+	auto temp = vertices.find(id);
+
+	if (temp != vertices.end()) {
+		std::cout << "[ERROR] : Cannot insert vertex %s with id %i in graph %s" << std::endl;
+		std::cout << "\tA vertex with the same id already exist" << std::endl;
+		return 0;
+	}
+	vertices.insert(std::pair<int, Vertex>(id, Vertex(name, id, line)));
+	return 1;
+}
+
+
+int Graph::add_edge(const unsigned int id1, const unsigned int id2, const unsigned int duration, bool isMetro)
+{	
+	auto i = vertices.find(id1);
+	auto j = vertices.find(id2);
+
+	if(i == vertices.end() || j == vertices.end()) {
+		std::cout << "[ERROR] : Cannot create an edge between id %i and %i\n" << std::endl;
+		std::cout << "\tOne of the vertices doesn't exist\n" << std::endl;
+		return 0;
+	}
+	else
+	{
+		i->second.add_edge(id1, id2, duration, isMetro);
+		j->second.add_edge(id2, id1, duration, isMetro);
+	}
+	return 1;
+}
 
 void Graph::dijkstra(unsigned int idSource, unsigned int idDestintion)
 {
@@ -208,44 +248,6 @@ std::list<Vertex> Graph::dijkstra_get_path(const unsigned int idSource, const un
 		res.push_front(vertices.find(indice)->second);
 		indice = pere[indice];
 	}
-
-	res.push_front(vertices.find(idSource)->second);
-	return res;
-}
-
-
-
-int Graph::add_vertex(const std::string name, const unsigned int id, std::string line)
-{
-	auto temp = vertices.find(id);
-
-	if (temp != vertices.end()) {
-		std::cout << "[ERROR] : Cannot insert vertex %s with id %i in graph %s" << std::endl;
-		std::cout << "\tA vertex with the same id already exist" << std::endl;
-		return 0;
-	}
-	vertices.insert(std::pair<int, Vertex>(id, Vertex(name, id, line)));
-	return 1;
-}
-
-
-int Graph::add_edge(const unsigned int id1, const unsigned int id2, const unsigned int duration, bool isMetro)
-{	
-	auto i = vertices.find(id1);
-	auto j = vertices.find(id2);
-
-	if(i == vertices.end() || j == vertices.end()) {
-		std::cout << "[ERROR] : Cannot create an edge between id %i and %i\n" << std::endl;
-		std::cout << "\tOne of the vertices doesn't exist\n" << std::endl;
-		return 0;
-	}
-	else
-	{
-		i->second.add_edge(id1, id2, duration, isMetro);
-		j->second.add_edge(id2, id1, duration, isMetro);
-	}
-	return 1;
-}
 
 
 void Graph::render()
