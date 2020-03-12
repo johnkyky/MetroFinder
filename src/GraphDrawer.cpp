@@ -36,6 +36,7 @@ int GraphDrawer::load_station(const std::string fileName)
     std::ifstream file(fileName);
     int compteur = 0;
 
+    auto& vertex = graph.getVertices();
     if (file.fail() || !file.is_open())
         return 0;
     while (!file.eof())
@@ -50,6 +51,10 @@ int GraphDrawer::load_station(const std::string fileName)
         y = mapTo(6853000, 6873000, window.getSize().y - 50, 50, y);
         stations.insert(std::pair<std::string, Station>(buffer, Station(buffer, x, y)));
         compteur++;
+    }
+    for (auto& i : vertex)
+    {
+        stations[i.second.getName()].setId(i.second.getId());
     }
     file.close();
     return compteur;
@@ -88,7 +93,7 @@ void GraphDrawer::display()
         current = high_resolution_clock::now();
         update_time += duration_cast<milliseconds>(current - last_update).count();
 
-        window.clear(sf::Color(29, 34, 43));
+        window.clear(sf::Color(91, 86, 86));
         handleEvent();
         while (update_time >= update_per_second) {
             update();
@@ -212,6 +217,7 @@ void GraphDrawer::handle_station(sf::Event evt, const bool clicked)
                 if (selected_station[1])
                     selected_station[1]->setSelected(false);
                 selected_station[1] = &i.second;
+                graph.dijkstra(selected_station[0]->getId(), selected_station[1]->getId());
             } else
                 selected_station[0] = &i.second;
         } else if (temp == 3) 
@@ -258,18 +264,20 @@ void GraphDrawer::render_line()
 void GraphDrawer::render_station()
 {
     window.setView(leftPanel);
-    sf::View unzoomed(sf::FloatRect(0, 0, 3 * window.getSize().x / 5, window.getSize().y));
-    sf::Vector2i currentPos;
-    sf::Text temp;
-
-    unzoomed.setViewport(sf::FloatRect(0, 0, 0.6f, 1.0f));
-    temp.setFillColor(sf::Color::White);
-    temp.setFont(font);
-    temp.setCharacterSize(15);
     for (auto& i : stations)
-    {
         i.second.draw(window);
-        if (zoom < -10) {
+    if (zoom <= -10)
+    {
+        sf::View unzoomed(sf::FloatRect(0, 0, 3 * window.getSize().x / 5, window.getSize().y));
+        sf::Vector2i currentPos;
+        sf::Text temp;
+
+        unzoomed.setViewport(sf::FloatRect(0, 0, 0.6f, 1.0f));
+        temp.setFillColor(sf::Color::White);
+        temp.setFont(font);
+        temp.setCharacterSize(20);
+        for (auto& i : stations)
+        {
             currentPos = window.mapCoordsToPixel(i.second.getPosition());
             window.setView(unzoomed);
             temp.setString(i.second.getName());
@@ -283,27 +291,27 @@ void GraphDrawer::render_station()
 void GraphDrawer::render_menu()
 {
     sf::Text temp;
-    std::string buffera;
-    sf::String buffer;
+    std::string buffer;
+    sf::RectangleShape ligne;
 
     window.setView(rightPanel);
+    ligne.setPosition(0, 0);
+    ligne.setFillColor(sf::Color(77,70,70));
+    ligne.setSize(sf::Vector2f(window.getSize().x, window.getSize().y));
+    window.draw(ligne);
+    ligne.setSize(sf::Vector2f(5, window.getSize().y));
+    ligne.setFillColor(sf::Color(137,187,254));
+    window.draw(ligne);
     temp.setFont(font);
-    temp.setCharacterSize(12);
+    temp.setCharacterSize(15);
     temp.setFillColor(sf::Color::White);
-    if (selected_station[0])
-        buffera = "Station 1 : " + selected_station[0]->getName();
-    else
-        buffera = "Station 1 : ";
-    buffer = sf::String(buffera);
-    temp.setString(buffer);
-    temp.setPosition(sf::Vector2f(0, 50));
-    window.draw(temp);
-    if (selected_station[1])
-        buffera = "Station 2 : " + selected_station[1]->getName();
-    else
-        buffera = "Station 2 : ";
-    buffer = sf::String(buffera);
-    temp.setString(buffer);
-    temp.setPosition(sf::Vector2f(0, 70));
-    window.draw(temp);
+    for (int i = 0; i < 2; i++)
+    {
+        buffer = "Station " + std::to_string(i) + " : ";
+        if (selected_station[i])
+            buffer += selected_station[i]->getName();
+        temp.setString(buffer);
+        temp.setPosition(sf::Vector2f(10, temp.getCharacterSize()  * i));
+        window.draw(temp);
+    }
 }

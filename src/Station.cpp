@@ -43,11 +43,11 @@ void Station::draw(sf::RenderWindow& window)
     temp.setOrigin(sf::Vector2f(size_basic, size_basic));
     temp.setPosition(position);
     if (is_selected)
-        temp.setFillColor(sf::Color(5, 234, 250));
+        temp.setFillColor(sf::Color(0,166,251));
     else if (is_hovered)
-        temp.setFillColor(sf::Color(67, 149, 153));
+        temp.setFillColor(sf::Color(5,130,202));
     else
-        temp.setFillColor(sf::Color(121, 154, 156));
+        temp.setFillColor(sf::Color(118,123,145));
     if (is_hovered || is_selected)
         temp.setScale(2, 2);
     window.draw(temp);
@@ -58,3 +58,5 @@ sf::Vector2f Station::getPosition() {return position;}
 bool Station::isHovered() {return is_hovered;}
 bool Station::isSelected() {return is_selected;}
 void Station::setSelected(bool val) {is_selected = val;}
+int Station::getId() {return id;};
+void Station::setId(int val) {id = val;};

@@ -11,6 +11,7 @@ private:
     bool is_hovered = false;
     bool is_selected = false;
     enum stationSize {size_basic = 5, size_highligted = 10};
+    int id;
 
 public:
     Station(std::string newName, int x, int y);
@@ -24,4 +25,6 @@ public:
     bool isHovered();
     bool isSelected();
     void setSelected(bool val);
+    int getId();
+    void setId(int val);
 };
