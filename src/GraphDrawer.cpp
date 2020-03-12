@@ -17,6 +17,7 @@ window(sf::VideoMode(1500, 1000), "MetroFinder"), hovered_station(NULL), selecte
     window.setVisible(false);
     leftPanel.setSize(sf::Vector2f(double(3 * window.getSize().x / 5), window.getSize().y));
     leftPanel.setViewport(sf::FloatRect(0.0f, 0.0, 0.600f, 1.0f));
+    leftPanel_center = leftPanel.getCenter();
     rightPanel.setCenter(double(window.getSize().x / 5), window.getSize().y/2);
     rightPanel.setSize(sf::Vector2f(double(2 * window.getSize().x / 5), window.getSize().y));
     rightPanel.setViewport(sf::FloatRect(0.600f, 0.0, 0.400f, 1.0f));
@@ -141,19 +142,41 @@ void GraphDrawer::render()
 
 // Fonctions d'handle
 
+void GraphDrawer::zoomToward(sf::Vector2i target, double zoom)
+{
+    const sf::Vector2f beforeCoord{ window.mapPixelToCoords(target) };
+	sf::View& view = leftPanel;
+	view.zoom(zoom);
+	window.setView(view);
+	const sf::Vector2f afterCoord{ window.mapPixelToCoords(target) };
+	const sf::Vector2f offsetCoords{ beforeCoord - afterCoord };
+	view.move(offsetCoords);
+}
+
 void GraphDrawer::handle_zoom(sf::Event evt, sf::View& view, double& zoom)
 {
-    int signe = (evt.mouseWheelScroll.delta > 0) ? -1 : 1;
+    const int signe = (evt.mouseWheelScroll.delta > 0) ? -1 : 1;
+    window.setView(leftPanel);
 
     if (evt.mouseWheelScroll.delta == 0)
         return;
     zoom -= evt.mouseWheelScroll.delta;
+    std::cout << "Zooming : " << zoom << " Signe : " << signe << "\n";
     if (zoom < -17)
         zoom = -17;
     else if (zoom > 0)
         zoom = 0;
+    else if (signe > 0)
+    {
+        std::cout << "Zooming out !\n";
+        zoomToward(sf::Mouse::getPosition(window), 1 / 0.875f);
+    }
     else
-        view.zoom((signe > 0) ? 1/0.875 : 0.875);
+    {
+        std::cout << "Zooming in !\n";
+        zoomToward(sf::Mouse::getPosition(window), 0.875f);
+    }
+    
 
 }
 
@@ -235,10 +258,25 @@ void GraphDrawer::render_line()
 void GraphDrawer::render_station()
 {
     window.setView(leftPanel);
+    sf::View unzoomed(sf::FloatRect(0, 0, 3 * window.getSize().x / 5, window.getSize().y));
+    sf::Vector2i currentPos;
+    sf::Text temp;
 
+    unzoomed.setViewport(sf::FloatRect(0, 0, 0.6f, 1.0f));
+    temp.setFillColor(sf::Color::White);
+    temp.setFont(font);
+    temp.setCharacterSize(15);
     for (auto& i : stations)
     {
         i.second.draw(window);
+        if (zoom < -10) {
+            currentPos = window.mapCoordsToPixel(i.second.getPosition());
+            window.setView(unzoomed);
+            temp.setString(i.second.getName());
+            temp.setPosition(window.mapPixelToCoords(currentPos));
+            window.draw(temp);
+            window.setView(leftPanel);
+        }
     }
 }
 

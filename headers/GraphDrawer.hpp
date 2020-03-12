@@ -19,6 +19,7 @@ private:
 
     sf::View leftPanel;
     sf::View rightPanel;
+    sf::Vector2f leftPanel_center;
     sf::RenderWindow window;
     sf::Font font;
 
@@ -44,6 +45,7 @@ private:
     void update();
     void render();
 
+    void zoomToward(sf::Vector2i target, double zoom);
     void handle_zoom(sf::Event evt, sf::View& view, double& zoom);
     void handle_click(sf::Event evt, bool& clicked);
     void handle_station(sf::Event evt, const bool clicked);
