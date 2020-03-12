@@ -10,16 +10,18 @@ private:
     sf::Vector2f position;
     bool is_hovered = false;
     bool is_selected = false;
+    enum stationSize {size_basic = 5, size_highligted = 10};
 
 public:
     Station(std::string newName, int x, int y);
     Station();
     ~Station();
-    int handleEvent(const sf::RenderWindow& window, bool isClicked = false);
+    int handleEvent(const sf::RenderWindow& window, const bool isClicked = false);
     void draw(sf::RenderWindow& window);
 
     std::string getName();
     sf::Vector2f getPosition();
     bool isHovered();
     bool isSelected();
+    void setSelected(bool val);
 };

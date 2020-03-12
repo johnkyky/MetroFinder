@@ -15,7 +15,7 @@ Station::~Station()
 
 }
 
-int Station::handleEvent(const sf::RenderWindow& window, bool isClicked)
+int Station::handleEvent(const sf::RenderWindow& window, const bool isClicked)
 {
     sf::Mouse mouse;
     sf::Vector2i temp = mouse.getPosition(window);
@@ -25,19 +25,22 @@ int Station::handleEvent(const sf::RenderWindow& window, bool isClicked)
     if (distance <= ((is_hovered || is_selected) ? 100 : 25))
     {
         is_hovered = true;
-        if (isClicked) 
+        if (isClicked) {
             is_selected = !is_selected;
+            return is_selected ? 2 : 3;
+        }
+        return 1;
     }
     else
         is_hovered = false;
-    return (is_hovered) ? (is_selected) ? 2 : 1 : 0;
+    return 0;
 }
 
 void Station::draw(sf::RenderWindow& window)
 {
-    sf::CircleShape temp(5);
+    sf::CircleShape temp(size_basic);
 
-    temp.setOrigin(sf::Vector2f(5, 5));
+    temp.setOrigin(sf::Vector2f(size_basic, size_basic));
     temp.setPosition(position);
     if (is_selected)
         temp.setFillColor(sf::Color(5, 234, 250));
@@ -54,3 +57,4 @@ std::string Station::getName() {return name;}
 sf::Vector2f Station::getPosition() {return position;}
 bool Station::isHovered() {return is_hovered;}
 bool Station::isSelected() {return is_selected;}
+void Station::setSelected(bool val) {is_selected = val;}
