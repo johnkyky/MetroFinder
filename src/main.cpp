@@ -9,7 +9,9 @@ int main()
     Graph graph;
     
     graph.load_from_file("metro.txt");
-    graph.dijkstra(130, 252);
+    std::list<Vertex> vertex = graph.dijkstra(110, 142);
+    graph.vertex_to_string(vertex);
+
     GraphDrawer my_draw(graph, "positions.txt");
     my_draw.display();
     return 0;

@@ -25,13 +25,14 @@ public:
 
 	int load_from_file(std::string fileName);
 
-  std::map<unsigned int, Vertex>& getVertices();
-  void dijkstra(unsigned int source, unsigned int destination);
+  	std::map<unsigned int, Vertex>& getVertices();
+  	std::list<Vertex> dijkstra(unsigned int source, unsigned int destination);
   
 	int add_vertex(const std::string name, const unsigned int id, std::string line = "");
 	int add_edge(const unsigned int id1, const unsigned int id2, const unsigned int duration, bool isMetro = true);
 
-	void render();
+	std::list<std::string> vertex_to_string(std::list<Vertex>& vertices_path);
+
 private:
 	void load_line();
 	std::list<Edge> dijkstra_find_valid_edge(const unsigned int id, const std::vector<unsigned int> &V);

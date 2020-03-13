@@ -131,7 +131,7 @@ int Graph::add_edge(const unsigned int id1, const unsigned int id2, const unsign
 	return 1;
 }
 
-void Graph::dijkstra(unsigned int idSource, unsigned int idDestintion)
+std::list<Vertex> Graph::dijkstra(unsigned int idSource, unsigned int idDestintion)
 {
 	////VARIABLE
 	unsigned int distance[vertices.size()];
@@ -174,15 +174,8 @@ void Graph::dijkstra(unsigned int idSource, unsigned int idDestintion)
 			}
 		}
 	}
-
 	std::list<Vertex> test = dijkstra_get_path(idSource, idDestintion, pere);
-
-	printf("\n");
-	for (auto i = test.begin(); i != test.end(); ++i)
-	{
-		std::cout << i->getName() << "\n";
-	}
-	printf("\n\n");
+	return test;
 }
 
 
@@ -250,9 +243,45 @@ std::list<Vertex> Graph::dijkstra_get_path(const unsigned int idSource, const un
 }
 
 
-void Graph::render()
+
+std::list<std::string> Graph::vertex_to_string(std::list<Vertex>& vertices_path)
 {
-	std::cout << vertices.size() << std::endl;
-	for(auto &i : vertices)
-		i.second.print();
+	std::list<std::string> res;
+	//unsigned int duration = 0;
+
+	std::string prendre_ligne("Prendre la ligne "), ensuite("Ensuite prendre la ligne"),\
+		jusqua(" jusqu'a ");
+
+	auto head = vertices_path.begin();
+
+	while(head != vertices_path.end())
+	{	
+		std::string line = head->getLine();
+		std::string station = head->getName();
+
+
+		while(line == head->getLine())
+		{
+			head++;
+			if(head == vertices_path.end())
+				break;
+		}
+
+		head--;
+		std::string buffer("");
+		if(res.empty())
+		{
+			buffer += prendre_ligne + line + " de " + station + jusqua + head->getName();
+			res.push_back(buffer);
+		}
+		else
+		{
+			buffer += prendre_ligne + line + " de " + station + jusqua + head->getName();
+			res.push_back(buffer);
+		}
+		std::cout << buffer << "\n";
+		head++;
+	}
+
+	return res;
 }
