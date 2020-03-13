@@ -1,10 +1,9 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
-#include "Graph.hpp"
-#include "GraphDrawer.hpp"
-#include <map>    
-#include <fstream>
-#include <math.h>
+
+#include "ThickLine.hpp"
+
+
 
 int main()
 {
