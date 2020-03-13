@@ -23,9 +23,9 @@ public:
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
-	void setSource(sf::Vector2f position);
-	void setDestination(sf::Vector2f position);
-	void setColor(sf::Color col);
+	void setSource(const sf::Vector2f position);
+	void setDestination(const sf::Vector2f position);
+	void setColor(const sf::Color col);
 	void setThickness(const int thick);
 
 private:

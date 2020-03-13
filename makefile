@@ -1,20 +1,20 @@
-SFFLAGS = -g -Wall -Werror -lsfml-system -lsfml-window -lsfml-graphics -lsfml-audio
+cc = g++
+headers = -Iheaders
+CFLAGS = -Wall -g
+SFFLAGS = -lsfml-system -lsfml-window -lsfml-graphics -lsfml-audio
+
+objdir = obj
+OBJ = main.o Graph.o Vertex.o Edge.o GraphDrawer.o Station.o ThickLine.o
+_OBJ = $(patsubst %,$(objdir)/%,$(OBJ))
 
 
-all: ThickLine.o
-	g++ -c -o main.o $(SFFLAGS) main.cpp
-	g++ -o sfml $(SFFLAGS) main.o ThickLine.o
-	./sfml
+all: $(_OBJ)
+	$(cc) $(headers) $(CFLAGS) $(SFFLAGS) $(_OBJ) -o MetroFinder
+	./MetroFinder
 
-
-main.o: main.cpp ThickLine.cpp ThickLine.hpp
-	g++ -c -o main.o $(SFFLAGS) main.cpp
-
-
-ThickLine.o: ThickLine.cpp ThickLine.hpp
-	g++ -c -o ThickLine.o $(SFFLAGS) ThickLine.cpp 
-
+$(objdir)/%.o: src/%.cpp
+	$(cc) -c $(headers) $(CFLAGS)  $(SFFLAGS) $< -o $@	
 
 clear:
-	rm sfml
-	rm *.o
+	rm MetroFinder
+	rm obj/*

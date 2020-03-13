@@ -9,7 +9,14 @@ int main()
 {
     sf::RenderWindow window(sf::VideoMode(720, 480), "SFML works!");
 
-    ThickLine demo(sf::Vector2f(360.f, 240.f), sf::Vector2f(300.f, 300.f), sf::Color::Cyan, 40);
+    ThickLine demo[10000];
+    for (int i = 0; i < 10000; ++i)
+    {
+        demo[i].setSource(sf::Vector2f(360.f, 240.f));
+        demo[i].setDestination(sf::Vector2f(300.f, 300.f));
+        demo[i].setColor(sf::Color::Cyan);
+        demo[i].setThickness(40);
+    }
 
     while (window.isOpen())
     {
@@ -24,19 +31,16 @@ int main()
         pos.x = (float)sf::Mouse::getPosition(window).x;
         pos.y = (float)sf::Mouse::getPosition(window).y;
 
-        demo.setSource(pos);
+        for (int i = 0; i < 10000; ++i)
+            demo[i].setDestination(pos);         
+
 
         window.clear();
 
-        window.draw(demo);
+        for (int i = 0; i < 10000; ++i)
+            window.draw(demo[i]);
 
         window.display();
-    }
-
-    while(1)
-    {
-        sf::Vector2f pos = sf::Vector2f(1.f, 1.f);
-        demo.setDestination(pos);
     }
 
     return 0;

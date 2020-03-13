@@ -45,19 +45,19 @@ void ThickLine::draw(sf::RenderTarget& target, sf::RenderStates states) const
 }
 
 
-void ThickLine::setSource(sf::Vector2f position)
+void ThickLine::setSource(const sf::Vector2f position)
 {
 	posSource = position;
 	refreshPosition();
 }
 
-void ThickLine::setDestination(sf::Vector2f position)
+void ThickLine::setDestination(const sf::Vector2f position)
 {
 	posDestination = position;
 	refreshPosition();
 }
 
-void ThickLine::setColor(sf::Color col)
+void ThickLine::setColor(const sf::Color col)
 {
 	color = col;
 }
@@ -65,6 +65,7 @@ void ThickLine::setColor(sf::Color col)
 void ThickLine::setThickness(const int thick)
 {
 	thickness = thick;
+	refreshPosition();
 }
 
 
