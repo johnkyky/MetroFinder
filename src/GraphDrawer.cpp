@@ -7,18 +7,20 @@ float mapTo(float a, float b, float c, float d, float val)
     return ( (val - a) / (b - a)) * (d - c) + c;
 }
 
-GraphDrawer::GraphDrawer(Graph& newGraph, const std::string stationPositions) : zoom(1), graph(newGraph), 
-window(sf::VideoMode(1500, 1000), "MetroFinder"),  hovered_station(NULL), selected_station(NULL)
+GraphDrawer::GraphDrawer(Graph& newGraph, const std::string stationPositions) : zoom(0), graph(newGraph), 
+window(sf::VideoMode(1500, 1000), "MetroFinder"), hovered_station(NULL), selected_station{NULL, NULL}
 {
-    std::cout << "Loading stations positions from " << stationPositions << "\n";
-    std::cout << load_station(stationPositions) << " positions found\n";
+    load_station(stationPositions);
     load_color();
-    window.setFramerateLimit(120);
+    font.loadFromFile("font.ttf");
+    window.setFramerateLimit(60);
     window.setVisible(false);
-    leftPanel.setSize(sf::Vector2f(3 * window.getSize().x / 4, window.getSize().y));
-    leftPanel.setViewport(sf::FloatRect(0, 0, 0.75f, 1.0f));
-    rightPanel.setSize(sf::Vector2f(window.getSize().x / 4, window.getSize().y));
-    rightPanel.setViewport(sf::FloatRect(0.75f, 0, 0.25f, 1.0f));
+    leftPanel.setSize(sf::Vector2f(double(3 * window.getSize().x / 5), window.getSize().y));
+    leftPanel.setViewport(sf::FloatRect(0.0f, 0.0, 0.600f, 1.0f));
+    leftPanel_center = leftPanel.getCenter();
+    rightPanel.setCenter(double(window.getSize().x / 5), window.getSize().y/2);
+    rightPanel.setSize(sf::Vector2f(double(2 * window.getSize().x / 5), window.getSize().y));
+    rightPanel.setViewport(sf::FloatRect(0.600f, 0.0, 0.400f, 1.0f));
 }
 
 GraphDrawer::~GraphDrawer()
@@ -29,38 +31,14 @@ GraphDrawer::~GraphDrawer()
 void GraphDrawer::setSize(const unsigned int x, const unsigned int y) {window.setSize(sf::Vector2u(x, y));}
 void GraphDrawer::setGraph(Graph& newGraph) {graph = newGraph;}
 
-void GraphDrawer::display()
-{
-    window.setVisible(true);
-    time_point<high_resolution_clock> last_update = high_resolution_clock::now();
-    time_point<high_resolution_clock> current;
-    int update_time = 0;
-    const int update_per_second = 1000 / 10;
-
-    while (window.isOpen())
-    {
-        current = high_resolution_clock::now();
-        update_time += duration_cast<milliseconds>(current - last_update).count();
-
-        window.clear(sf::Color(29, 34, 43));
-        handleEvent();
-        while (update_time >= update_per_second) {
-            update();
-            update_time -= update_per_second;
-        }
-        render();
-        window.display();
-        last_update = current;
-    }
-}
-
-int GraphDrawer::load_station(std::string fileName)
+int GraphDrawer::load_station(const std::string fileName)
 {
     std::ifstream file(fileName);
     int compteur = 0;
 
+    auto& vertex = graph.getVertices();
     if (file.fail() || !file.is_open())
-        throw std::runtime_error("[ERROR] : cannot open file " + fileName + "\n");
+        return 0;
     while (!file.eof())
     {
         std::string buffer;
@@ -69,10 +47,14 @@ int GraphDrawer::load_station(std::string fileName)
         file >> x >> y;
         file.get();
         std::getline(file, buffer);
-        x = mapTo(643375, 662000, 50, 3 * window.getSize().x / 4 - 50, x);
-        y = mapTo(6853445, 6873000, window.getSize().y - 50, 50, y);
+        x = mapTo(643000, 662000, 50, 3 * (double) window.getSize().x / 5 - 50, x);
+        y = mapTo(6853000, 6873000, window.getSize().y - 50, 50, y);
         stations.insert(std::pair<std::string, Station>(buffer, Station(buffer, x, y)));
         compteur++;
+    }
+    for (auto& i : vertex)
+    {
+        stations[i.second.getName()].setId(i.second.getId());
     }
     file.close();
     return compteur;
@@ -98,6 +80,31 @@ void GraphDrawer::load_color()
     lignesColor["14"]   = sf::Color(125,   5, 252);
 }
 
+void GraphDrawer::display()
+{
+    window.setVisible(true);
+    time_point<high_resolution_clock> last_update = high_resolution_clock::now();
+    time_point<high_resolution_clock> current;
+    int update_time = 0;
+    const int update_per_second = 1000 / 10;
+
+    while (window.isOpen())
+    {
+        current = high_resolution_clock::now();
+        update_time += duration_cast<milliseconds>(current - last_update).count();
+
+        window.clear(sf::Color(91, 86, 86));
+        handleEvent();
+        while (update_time >= update_per_second) {
+            update();
+            update_time -= update_per_second;
+        }
+        render();
+        window.display();
+        last_update = current;
+    }
+}
+
 void GraphDrawer::handleEvent()
 {
     sf::Event evt;
@@ -107,47 +114,136 @@ void GraphDrawer::handleEvent()
     bool clicked = false;
     while (window.pollEvent(evt))
     {
-        if (evt.type == sf::Event::Closed)
-            window.close();
-        else if (evt.type == sf::Event::MouseWheelScrolled) {
-            double add = evt.mouseWheelScroll.delta * -0.1;
-            if (add > 0 && zoom <= 1.2) {
-                zoom += add;
-                leftPanel.zoom(1 + add);
-            }
-            else if(add < 0 && zoom > 0) {
-                zoom += add;
-                leftPanel.zoom(1 + add);
-            }
-        }
-        else if (evt.type == sf::Event::MouseButtonPressed)
-            clicked = true;
-    }
-    for (auto& i : stations)
-    {
-        i.second.handleEvent(window, clicked);
-        if (i.second.isHovered()) {
-            hovered_station = &i.second;
-            if (i.second.isSelected())
-                selected_station = &i.second;
+        switch (evt.type)
+        {
+            case sf::Event::Closed:
+                window.close();
+                break;
+            case sf::Event::MouseWheelScrolled:
+                handle_zoom(evt, leftPanel, zoom);
+                break;
+            case sf::Event::MouseButtonPressed:
+                handle_click(evt, clicked);
+                break;
+            default :
+                break;
         }
     }
+    handle_station(evt, clicked);
     window.setView(rightPanel);
 }
 
 void GraphDrawer::update()
 {
-    if (hovered_station != NULL)
-        std::cout << "Station : " << hovered_station->getName() << "\n";
-    else if (selected_station != NULL)
-        std::cout << selected_station->getName() << "\n";
+
 }
 
 void GraphDrawer::render()
 {
+    render_line();
+    render_station();
+    render_menu();
+}
+
+// Fonctions d'handle
+
+void GraphDrawer::zoomToward(sf::Vector2i target, double zoom)
+{
+    const sf::Vector2f beforeCoord{ window.mapPixelToCoords(target) };
+	sf::View& view = leftPanel;
+	view.zoom(zoom);
+	window.setView(view);
+	const sf::Vector2f afterCoord{ window.mapPixelToCoords(target) };
+	const sf::Vector2f offsetCoords{ beforeCoord - afterCoord };
+	view.move(offsetCoords);
+}
+
+void GraphDrawer::handle_zoom(sf::Event evt, sf::View& view, double& zoom)
+{
+    const int signe = (evt.mouseWheelScroll.delta > 0) ? -1 : 1;
     window.setView(leftPanel);
+
+    if (evt.mouseWheelScroll.delta == 0)
+        return;
+    zoom -= evt.mouseWheelScroll.delta;
+    std::cout << "Zooming : " << zoom << " Signe : " << signe << "\n";
+    if (zoom < -17)
+        zoom = -17;
+    else if (zoom > 0)
+        zoom = 0;
+    else if (signe > 0)
+    {
+        std::cout << "Zooming out !\n";
+        zoomToward(sf::Mouse::getPosition(window), 1 / 0.875f);
+    }
+    else
+    {
+        std::cout << "Zooming in !\n";
+        zoomToward(sf::Mouse::getPosition(window), 0.875f);
+    }
+    
+
+}
+
+void GraphDrawer::handle_click(sf::Event evt, bool& clicked)
+{
+    switch (evt.mouseButton.button) {
+        case sf::Mouse::Right :
+            if (selected_station[0])
+                selected_station[0]->setSelected(false);
+            if (selected_station[1])
+                selected_station[1]->setSelected(false);
+            selected_station[0] = selected_station[1] = NULL;
+            break;
+        case sf::Mouse::Left :
+            clicked = true;
+            break;
+        default:
+            break;
+    }
+}
+void GraphDrawer::handle_station(sf::Event evt, const bool clicked) 
+{
+    for (auto& i : stations)
+    {
+        int temp = i.second.handleEvent(window, clicked);
+
+        if (temp == 1)
+            hovered_station = &i.second;
+        else if (temp == 2) 
+        {
+            if (selected_station[0]) 
+            {
+                if (selected_station[1])
+                    selected_station[1]->setSelected(false);
+                selected_station[1] = &i.second;
+                graph.dijkstra(selected_station[0]->getId(), selected_station[1]->getId());
+            } else
+                selected_station[0] = &i.second;
+        } else if (temp == 3) 
+        {
+            if (&i.second == selected_station[0])
+            {
+                selected_station[0]->setSelected(false);
+                selected_station[0] = NULL;
+            }
+            if (&i.second == selected_station[1])
+            {
+                selected_station[1]->setSelected(false);
+                selected_station[1] = NULL;
+            }
+        }
+    }
+}
+
+
+//Fonctions de render
+
+void GraphDrawer::render_line()
+{
     auto& temp = graph.getVertices();
 
+    window.setView(leftPanel);
     for (auto& i : temp)
     {
         std::string buffer = i.second.getName();
@@ -163,10 +259,59 @@ void GraphDrawer::render()
             window.draw(line, 2, sf::Lines);
         }
     }
+}
+
+void GraphDrawer::render_station()
+{
+    window.setView(leftPanel);
     for (auto& i : stations)
-    {
         i.second.draw(window);
+    if (zoom <= -10)
+    {
+        sf::View unzoomed(sf::FloatRect(0, 0, 3 * window.getSize().x / 5, window.getSize().y));
+        sf::Vector2i currentPos;
+        sf::Text temp;
+
+        unzoomed.setViewport(sf::FloatRect(0, 0, 0.6f, 1.0f));
+        temp.setFillColor(sf::Color::White);
+        temp.setFont(font);
+        temp.setCharacterSize(20);
+        for (auto& i : stations)
+        {
+            currentPos = window.mapCoordsToPixel(i.second.getPosition());
+            window.setView(unzoomed);
+            temp.setString(i.second.getName());
+            temp.setPosition(window.mapPixelToCoords(currentPos));
+            window.draw(temp);
+            window.setView(leftPanel);
+        }
     }
+}
+
+void GraphDrawer::render_menu()
+{
+    sf::Text temp;
+    std::string buffer;
+    sf::RectangleShape ligne;
+
     window.setView(rightPanel);
-    window.setView(window.getDefaultView());
+    ligne.setPosition(0, 0);
+    ligne.setFillColor(sf::Color(77,70,70));
+    ligne.setSize(sf::Vector2f(window.getSize().x, window.getSize().y));
+    window.draw(ligne);
+    ligne.setSize(sf::Vector2f(5, window.getSize().y));
+    ligne.setFillColor(sf::Color(137,187,254));
+    window.draw(ligne);
+    temp.setFont(font);
+    temp.setCharacterSize(15);
+    temp.setFillColor(sf::Color::White);
+    for (int i = 0; i < 2; i++)
+    {
+        buffer = "Station " + std::to_string(i) + " : ";
+        if (selected_station[i])
+            buffer += selected_station[i]->getName();
+        temp.setString(buffer);
+        temp.setPosition(sf::Vector2f(10, temp.getCharacterSize()  * i));
+        window.draw(temp);
+    }
 }

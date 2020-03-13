@@ -180,7 +180,7 @@ void Graph::dijkstra(unsigned int idSource, unsigned int idDestintion)
 	printf("\n");
 	for (auto i = test.begin(); i != test.end(); ++i)
 	{
-		printf("-> %u ", i->getId());
+		std::cout << i->getName() << "\n";
 	}
 	printf("\n\n");
 }
