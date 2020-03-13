@@ -302,16 +302,29 @@ void GraphDrawer::render_menu()
     ligne.setSize(sf::Vector2f(5, window.getSize().y));
     ligne.setFillColor(sf::Color(137,187,254));
     window.draw(ligne);
+    
     temp.setFont(font);
-    temp.setCharacterSize(15);
+    temp.setCharacterSize(20);
     temp.setFillColor(sf::Color::White);
-    for (int i = 0; i < 2; i++)
-    {
-        buffer = "Station " + std::to_string(i) + " : ";
-        if (selected_station[i])
-            buffer += selected_station[i]->getName();
-        temp.setString(buffer);
-        temp.setPosition(sf::Vector2f(10, temp.getCharacterSize()  * i));
-        window.draw(temp);
+    temp.setString("Depart");
+    temp.setPosition(sf::Vector2f(rightPanel.getSize().x / 2 - temp.getGlobalBounds().width / 2, 50));
+    temp.setStyle(sf::Text::Bold);
+    window.draw(temp);
+    temp.setStyle(sf::Text::Regular);
+    if (selected_station[0]) {
+        temp.setString(selected_station[0]->getName());
+        temp.setPosition(sf::Vector2f(rightPanel.getSize().x / 2 - temp.getGlobalBounds().width / 2, 75));
+        window.draw (temp);temp.setStyle(sf::Text::Regular);    
+    }
+
+    temp.setString("Destination");
+    temp.setStyle(sf::Text::Bold);
+    temp.setPosition(sf::Vector2f(rightPanel.getSize().x / 2 - temp.getGlobalBounds().width / 2, 100));
+    window.draw(temp);
+    temp.setStyle(sf::Text::Regular);
+    if (selected_station[1]) {
+        temp.setString(selected_station[1]->getName());
+        temp.setPosition(sf::Vector2f(rightPanel.getSize().x / 2 - temp.getGlobalBounds().width / 2, 125));
+        window.draw (temp);
     }
 }
