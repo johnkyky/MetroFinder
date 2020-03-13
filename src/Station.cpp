@@ -42,6 +42,8 @@ void Station::draw(sf::RenderWindow& window)
 
     temp.setOrigin(sf::Vector2f(size_basic, size_basic));
     temp.setPosition(position);
+    temp.setOutlineColor(sf::Color::Black);
+    temp.setOutlineThickness(1);
     if (is_selected)
         temp.setFillColor(sf::Color(0,166,251));
     else if (is_hovered)

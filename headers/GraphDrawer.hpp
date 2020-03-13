@@ -9,7 +9,7 @@
 #include <memory>
 #include "Graph.hpp"
 #include "Station.hpp"
-
+#include "ThickLine.hpp"
 
 class GraphDrawer
 {

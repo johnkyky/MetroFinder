@@ -1,8 +1,7 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
-
-#include "ThickLine.hpp"
-
+#include "Graph.hpp"
+#include "GraphDrawer.hpp"
 
 
 int main()

@@ -16,11 +16,11 @@ window(sf::VideoMode(1500, 1000), "MetroFinder"), hovered_station(NULL), selecte
     window.setFramerateLimit(60);
     window.setVisible(false);
     leftPanel.setSize(sf::Vector2f(double(3 * window.getSize().x / 5), window.getSize().y));
-    leftPanel.setViewport(sf::FloatRect(0.0f, 0.0, 0.600f, 1.0f));
+    leftPanel.setViewport(sf::FloatRect(0.4f, 0.0, 0.600f, 1.0f));
     leftPanel_center = leftPanel.getCenter();
     rightPanel.setCenter(double(window.getSize().x / 5), window.getSize().y/2);
     rightPanel.setSize(sf::Vector2f(double(2 * window.getSize().x / 5), window.getSize().y));
-    rightPanel.setViewport(sf::FloatRect(0.600f, 0.0, 0.400f, 1.0f));
+    rightPanel.setViewport(sf::FloatRect(0.0, 0.0, 0.4f, 1.0f));
 }
 
 GraphDrawer::~GraphDrawer()
@@ -93,7 +93,7 @@ void GraphDrawer::display()
         current = high_resolution_clock::now();
         update_time += duration_cast<milliseconds>(current - last_update).count();
 
-        window.clear(sf::Color(91, 86, 86));
+        window.clear(sf::Color(53, 48, 54));
         handleEvent();
         while (update_time >= update_per_second) {
             update();
@@ -125,6 +125,11 @@ void GraphDrawer::handleEvent()
             case sf::Event::MouseButtonPressed:
                 handle_click(evt, clicked);
                 break;
+            case sf::Event::Resized:
+                leftPanel.setCenter(double(3 * window.getSize().x / 10), window.getSize().y/2);
+                leftPanel.setSize(sf::Vector2f(double(3 * window.getSize().x / 5), window.getSize().y));
+                rightPanel.setCenter(double(window.getSize().x / 5), window.getSize().y/2);
+                rightPanel.setSize(sf::Vector2f(double(2 * window.getSize().x / 5), window.getSize().y));
             default :
                 break;
         }
@@ -242,7 +247,9 @@ void GraphDrawer::handle_station(sf::Event evt, const bool clicked)
 void GraphDrawer::render_line()
 {
     auto& temp = graph.getVertices();
+    ThickLine line;
 
+    line.setThickness(4);
     window.setView(leftPanel);
     for (auto& i : temp)
     {
@@ -251,12 +258,10 @@ void GraphDrawer::render_line()
         {
             sf::Vector2f posa = stations[buffer].getPosition();
             sf::Vector2f posb = stations[temp[c.getDestination()].getName()].getPosition();
-            sf::Color coul = lignesColor[i.second.getLine()];
-            sf::Vertex line[2] = {
-                sf::Vertex(posa, coul),
-                sf::Vertex(posb, coul)
-            };
-            window.draw(line, 2, sf::Lines);
+            line.setColor(lignesColor[i.second.getLine()]);
+            line.setSource(posa);
+            line.setDestination(posb);
+            window.draw(line);
         }
     }
 }
@@ -296,16 +301,17 @@ void GraphDrawer::render_menu()
 
     window.setView(rightPanel);
     ligne.setPosition(0, 0);
-    ligne.setFillColor(sf::Color(77,70,70));
+    ligne.setFillColor(sf::Color(101, 180, 229));
     ligne.setSize(sf::Vector2f(window.getSize().x, window.getSize().y));
     window.draw(ligne);
+    ligne.setPosition(2 * window.getSize().x / 5 - 5, 0);
     ligne.setSize(sf::Vector2f(5, window.getSize().y));
-    ligne.setFillColor(sf::Color(137,187,254));
+    ligne.setFillColor(sf::Color::White);
     window.draw(ligne);
     
     temp.setFont(font);
     temp.setCharacterSize(20);
-    temp.setFillColor(sf::Color::White);
+    temp.setFillColor(sf::Color(53, 48, 54));
     temp.setString("Depart");
     temp.setPosition(sf::Vector2f(rightPanel.getSize().x / 2 - temp.getGlobalBounds().width / 2, 50));
     temp.setStyle(sf::Text::Bold);
