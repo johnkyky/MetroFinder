@@ -276,7 +276,7 @@ std::list<std::string> Graph::vertex_to_string(std::list<Vertex>& vertices_path)
 		}
 		else
 		{
-			buffer += prendre_ligne + line + " de " + station + jusqua + head->getName();
+			buffer += ensuite + line + jusqua + head->getName();
 			res.push_back(buffer);
 		}
 		std::cout << buffer << "\n";
