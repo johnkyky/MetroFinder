@@ -131,7 +131,7 @@ int Graph::add_edge(const unsigned int id1, const unsigned int id2, const unsign
 	return 1;
 }
 
-void Graph::dijkstra(unsigned int idSource, unsigned int idDestintion)
+std::list<Vertex> Graph::dijkstra(unsigned int idSource, unsigned int idDestintion)
 {
 	////VARIABLE
 	unsigned int distance[vertices.size()];
@@ -174,15 +174,8 @@ void Graph::dijkstra(unsigned int idSource, unsigned int idDestintion)
 			}
 		}
 	}
-
 	std::list<Vertex> test = dijkstra_get_path(idSource, idDestintion, pere);
-
-	printf("\n");
-	for (auto i = test.begin(); i != test.end(); ++i)
-	{
-		std::cout << i->getName() << "\n";
-	}
-	printf("\n\n");
+	return test;
 }
 
 
@@ -250,9 +243,69 @@ std::list<Vertex> Graph::dijkstra_get_path(const unsigned int idSource, const un
 }
 
 
-void Graph::render()
+std::list<std::string> Graph::vertex_to_string(std::list<Vertex>& vertices_path)
 {
-	std::cout << vertices.size() << std::endl;
-	for(auto &i : vertices)
-		i.second.print();
+	std::list<std::string> res;
+	unsigned int duration = 0;
+
+	std::string prendre_ligne("Prendre la ligne "), ensuite("Ensuite prendre la ligne "),\
+		jusqua(" jusqu'a ");
+
+	auto head = vertices_path.begin();
+	while(head != vertices_path.end())
+	{	
+		std::string line = head->getLine();
+		std::string station = head->getName();
+
+		while(line == head->getLine())
+		{
+			unsigned int idDestintion = head->getId();
+			head++;
+			if(head == vertices_path.end())
+				break;
+			unsigned int idSource = head->getId();
+
+			unsigned int bufferDuration = get_duration_edge_list(head->getEdges(), idSource, idDestintion);
+			if(!bufferDuration)
+				printf("je sais pas quoi mettre mais on a pas trouver la edge\n");
+			duration += bufferDuration;
+		}
+
+		head--;
+		if(res.empty())
+			res.push_back(prendre_ligne + line + " de " + station + jusqua + head->getName());
+		else
+			res.push_back(ensuite + line + jusqua + head->getName());
+		head++;
+	}
+	res.push_back("duree estimee du trajet : " + convert_second_to_string(duration));
+	return res;
+}
+
+
+unsigned int Graph::get_duration_edge_list(std::list<Edge>& edges, const unsigned int idSource, const unsigned int idDestination)
+{
+	for(auto& i : edges)
+		if(i.getDestination() == idDestination && i.getSource() == idSource)
+			return i.getDuration();
+	return 0;
+}
+
+
+std::string Graph::convert_second_to_string(const unsigned int duration)
+{
+	std::string time;
+	unsigned int minute = duration / 60;
+	unsigned int second = duration % 60;
+	unsigned int heure = minute / 60;
+	minute = minute % 60;
+
+	if(heure)
+		time += std::to_string(heure) + "h";
+	if(minute)
+		time += std::to_string(minute) + "m";
+	if(second)
+		time += std::to_string(second) + "s";
+
+	return time;
 }

@@ -19,48 +19,18 @@ Edge::~Edge()
  
 }
 
-unsigned int Edge::getSource()
-{
- return idSource;
-}
+unsigned int Edge::getSource() {return idSource;}
 
-void Edge::setSource(const unsigned int val)
-{
- idSource = val;
-}
+void Edge::setSource(const unsigned int val) {idSource = val;}
 
-unsigned int Edge::getDestination()
-{
- return idDestination;
-}
+unsigned int Edge::getDestination() {return idDestination;}
 
-void Edge::setDestination(const unsigned int val)
-{
- idDestination = val;
-}
+void Edge::setDestination(const unsigned int val) {idDestination = val;}
 
-unsigned int Edge::getDuration()
-{
- return duration;
-}
+unsigned int Edge::getDuration() {return duration;}
 
-void Edge::setDuration(const unsigned int val)
-{
- duration = val;
-}
+void Edge::setDuration(const unsigned int val) {duration = val;}
 
-bool Edge::getMetro()
-{
- return isMetro;
-}
+bool Edge::getMetro() {return isMetro;}
 
-void Edge::setMetro(bool val)
-{
- isMetro = val;
-}
-
-
-void Edge::print()
-{
- std::cout << "->" << idSource << " <-" << idDestination << " | duration " << duration << std::endl;
-}
+void Edge::setMetro(bool val) {isMetro = val;}

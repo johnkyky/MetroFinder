@@ -16,5 +16,5 @@ $(objdir)/%.o: src/%.cpp
 	$(cc) -c $(headers) $(CFLAGS)  $(SFFLAGS) $< -o $@	
 
 clear:
-	rm MetroFinder
 	rm obj/*
+	rm MetroFinder
