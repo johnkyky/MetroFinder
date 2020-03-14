@@ -222,7 +222,12 @@ void GraphDrawer::handle_station(sf::Event evt, const bool clicked)
                 if (selected_station[1])
                     selected_station[1]->setSelected(false);
                 selected_station[1] = &i.second;
-                graph.dijkstra(selected_station[0]->getId(), selected_station[1]->getId());
+                
+                std::list<Vertex> vertexBuffer = graph.dijkstra(selected_station[0]->getId(), selected_station[1]->getId());
+                std::list<std::string> stringBuffer = graph.vertex_to_string(vertexBuffer);
+                for(auto& i : stringBuffer)
+                    std::cout << i << "\n";
+                printf("\n\n");
             } else
                 selected_station[0] = &i.second;
         } else if (temp == 3) 
