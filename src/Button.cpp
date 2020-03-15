@@ -18,6 +18,6 @@ Button::~Button()
 }
 
 
-bool Button::isActivated() {return actived;}
+const bool Button::isActivated() {return actived;}
 
 void Button::setActivated(const bool val) {actived = val;}

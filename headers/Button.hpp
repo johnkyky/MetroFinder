@@ -17,7 +17,7 @@ public:
 	virtual bool button_pressed(sf::Window& window, const sf::Event& event) = 0;
 	virtual bool button_activated(sf::Window& window, const sf::Event& event) = 0;
 
-	bool isActivated();
+	const bool isActivated();
 	void setActivated(const bool val);
 
 protected:
