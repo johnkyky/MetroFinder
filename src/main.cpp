@@ -3,6 +3,7 @@
 #include "Graph.hpp"
 #include "GraphDrawer.hpp"
 
+#include "ButtonColor.hpp"
 
 int main()
 {
@@ -15,8 +16,9 @@ int main()
     //	std::cout << i << "\n";
 
 
-
     GraphDrawer my_draw(graph, "positions.txt");
     my_draw.display();
+
+
     return 0;
 }

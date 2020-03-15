@@ -4,7 +4,7 @@ CFLAGS = -Wall -g
 SFFLAGS = -lsfml-system -lsfml-window -lsfml-graphics -lsfml-audio
 
 objdir = obj
-OBJ = main.o Graph.o Vertex.o Edge.o GraphDrawer.o Station.o ThickLine.o
+OBJ = main.o Graph.o Vertex.o Edge.o GraphDrawer.o Station.o ThickLine.o Button.o ButtonColor.o
 _OBJ = $(patsubst %,$(objdir)/%,$(OBJ))
 
 
