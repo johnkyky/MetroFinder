@@ -4,6 +4,7 @@
 #include "GraphDrawer.hpp"
 
 #include "ButtonColor.hpp"
+#include "ButtonTexture.hpp"
 
 int main()
 {
@@ -15,6 +16,7 @@ int main()
     //for(auto& i : demo)
     //	std::cout << i << "\n";
 
+    ButtonTexture t;
 
     GraphDrawer my_draw(graph, "positions.txt");
     my_draw.display();

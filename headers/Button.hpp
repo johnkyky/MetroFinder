@@ -4,7 +4,6 @@
 #include <string>
 #include "SFML/Graphics.hpp"
 
-using namespace std;
 
 class Button
 	: public sf::Transformable, public sf::Drawable
@@ -19,6 +18,8 @@ public:
 
 	const bool isActivated();
 	void setActivated(const bool val);
+
+	void setDimension(const sf::Vector2f dim);
 
 protected:
 	sf::Vector2f dimension;
