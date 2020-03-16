@@ -20,7 +20,7 @@ ButtonColor::~ButtonColor()
 }
 
 
-bool ButtonColor::button_pressed(sf::Window& window, const sf::Event& event)
+bool ButtonColor::button_pressed(sf::RenderWindow& window, const sf::Event& event)
 {
 	if(sf::Mouse::getPosition(window).x >= this->getPosition().x &&
 		sf::Mouse::getPosition(window).x <= this->getPosition().x + dimension.x &&
@@ -39,7 +39,7 @@ bool ButtonColor::button_pressed(sf::Window& window, const sf::Event& event)
 	return false;
 }
 
-bool ButtonColor::button_activated(sf::Window& window, const sf::Event& event)
+bool ButtonColor::button_activated(sf::RenderWindow& window, const sf::Event& event)
 {
 	if(sf::Mouse::getPosition(window).x >= this->getPosition().x &&
 		sf::Mouse::getPosition(window).x <= this->getPosition().x + dimension.x &&

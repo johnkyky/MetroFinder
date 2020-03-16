@@ -7,20 +7,27 @@ float mapTo(float a, float b, float c, float d, float val)
     return ( (val - a) / (b - a)) * (d - c) + c;
 }
 
+std::string id_to_string(const int id)
+{
+    const std::string convert[16] = {"1", "2", "3", "3b", "4", "5", "6", "7", "7b", "8", "9", "10", "11", "12", "13", "14"};
+    return convert[id];
+}
+
 GraphDrawer::GraphDrawer(Graph& newGraph, const std::string stationPositions) : zoom(0), graph(newGraph), 
-window(sf::VideoMode(1500, 1000), "MetroFinder"), hovered_station(NULL), selected_station{NULL, NULL}
+window(sf::VideoMode(1500, 1000), "MetroFinder", sf::Style::Default, sf::ContextSettings(0, 0, 4)), hovered_station(NULL), selected_station{NULL, NULL}
 {
     load_station(stationPositions);
     load_color();
     font.loadFromFile("font.ttf");
+    init_button();
     window.setFramerateLimit(60);
     window.setVisible(false);
-    leftPanel.setSize(sf::Vector2f(double(3 * window.getSize().x / 5), window.getSize().y));
-    leftPanel.setViewport(sf::FloatRect(0.4f, 0.0, 0.600f, 1.0f));
-    leftPanel_center = leftPanel.getCenter();
-    rightPanel.setCenter(double(window.getSize().x / 5), window.getSize().y/2);
-    rightPanel.setSize(sf::Vector2f(double(2 * window.getSize().x / 5), window.getSize().y));
-    rightPanel.setViewport(sf::FloatRect(0.0, 0.0, 0.4f, 1.0f));
+    rightPanel.setSize(sf::Vector2f(double(3 * window.getSize().x / 5), window.getSize().y));
+    rightPanel.setViewport(sf::FloatRect(0.4f, 0.0, 0.600f, 1.0f));
+    rightPanel_center = rightPanel.getCenter();
+    leftPanel.setCenter(double(window.getSize().x / 5), window.getSize().y/2);
+    leftPanel.setSize(sf::Vector2f(double(2 * window.getSize().x / 5), window.getSize().y));
+    leftPanel.setViewport(sf::FloatRect(0.0, 0.0, 0.4f, 1.0f));
 }
 
 GraphDrawer::~GraphDrawer()
@@ -109,33 +116,42 @@ void GraphDrawer::handleEvent()
 {
     sf::Event evt;
 
-    window.setView(leftPanel);
     hovered_station = NULL;
     bool clicked = false;
+    window.setView(leftPanel);
     while (window.pollEvent(evt))
     {
+
+        if (evt.type == sf::Event::Closed)
+            window.close();
+        for (int i = 0; i < 16; i++)
+        {
+            linesButton[i].button_activated(window, evt);
+        }
         switch (evt.type)
         {
-            case sf::Event::Closed:
-                window.close();
-                break;
             case sf::Event::MouseWheelScrolled:
-                handle_zoom(evt, leftPanel, zoom);
+                handle_zoom(evt, rightPanel, zoom);
                 break;
             case sf::Event::MouseButtonPressed:
                 handle_click(evt, clicked);
                 break;
             case sf::Event::Resized:
-                leftPanel.setCenter(double(3 * window.getSize().x / 10), window.getSize().y/2);
-                leftPanel.setSize(sf::Vector2f(double(3 * window.getSize().x / 5), window.getSize().y));
-                rightPanel.setCenter(double(window.getSize().x / 5), window.getSize().y/2);
-                rightPanel.setSize(sf::Vector2f(double(2 * window.getSize().x / 5), window.getSize().y));
+                rightPanel.setCenter(double(3 * window.getSize().x / 10), window.getSize().y/2);
+                rightPanel.setSize(sf::Vector2f(double(3 * window.getSize().x / 5), window.getSize().y));
+                leftPanel.setCenter(double(window.getSize().x / 5), window.getSize().y/2);
+                leftPanel.setSize(sf::Vector2f(double(2 * window.getSize().x / 5), window.getSize().y));
             default :
                 break;
         }
     }
-    handle_station(evt, clicked);
+    for (int i = 0; i < 16; i++)
+    {
+        showLine[id_to_string(i)] = !linesButton[i].isActivated();
+    }
     window.setView(rightPanel);
+    handle_station(evt, clicked);
+    window.setView(leftPanel);
 }
 
 void GraphDrawer::update()
@@ -152,10 +168,29 @@ void GraphDrawer::render()
 
 // Fonctions d'handle
 
+
+void GraphDrawer::init_button()
+{
+    std::stringstream stringCreator;
+    std::string buffer;
+
+    for (int i = 0; i < 16; i++) {
+        showLine[id_to_string(i)] = true;
+        linesButton[i].setActivated(false);
+    }
+    for (int i = 0; i < 16; i++) {
+        stringCreator << "ligne_" << id_to_string(i) << ".png";
+        linesButton[i].setIdleTexture(stringCreator.str());
+        linesButton[i].setPosition(sf::Vector2f(5 + i * 48, 10));
+        linesButton[i].setDimension(sf::Vector2f(32.f, 32.f));
+        stringCreator.str("");
+    }
+}
+
 void GraphDrawer::zoomToward(sf::Vector2i target, double zoom)
 {
     const sf::Vector2f beforeCoord{ window.mapPixelToCoords(target) };
-	sf::View& view = leftPanel;
+	sf::View& view = rightPanel;
 	view.zoom(zoom);
 	window.setView(view);
 	const sf::Vector2f afterCoord{ window.mapPixelToCoords(target) };
@@ -165,26 +200,25 @@ void GraphDrawer::zoomToward(sf::Vector2i target, double zoom)
 
 void GraphDrawer::handle_zoom(sf::Event evt, sf::View& view, double& zoom)
 {
-    const int signe = (evt.mouseWheelScroll.delta > 0) ? -1 : 1;
-    window.setView(leftPanel);
-
     if (evt.mouseWheelScroll.delta == 0)
         return;
     zoom -= evt.mouseWheelScroll.delta;
-    std::cout << "Zooming : " << zoom << " Signe : " << signe << "\n";
-    if (zoom < -17)
-        zoom = -17;
+    if (zoom < -7)
+        zoom = -7;
     else if (zoom > 0)
         zoom = 0;
-    else if (signe > 0)
+    else 
     {
-        std::cout << "Zooming out !\n";
-        zoomToward(sf::Mouse::getPosition(window), 1 / 0.875f);
-    }
-    else
-    {
-        std::cout << "Zooming in !\n";
-        zoomToward(sf::Mouse::getPosition(window), 0.875f);
+        rightPanel.setSize(sf::Vector2f(double(3 * window.getSize().x / 5), window.getSize().y));
+        window.setView(rightPanel);
+        if (zoom > 0 )
+        {
+            zoomToward(sf::Mouse::getPosition(window), (-zoom * 1 / 0.875f));
+        }
+        else
+        {
+            zoomToward(sf::Mouse::getPosition(window), 1 - (-zoom * 0.125f));
+        }
     }
     
 
@@ -255,34 +289,35 @@ void GraphDrawer::render_line()
     ThickLine line;
 
     line.setThickness(4);
-    window.setView(leftPanel);
+    window.setView(rightPanel);
     for (auto& i : temp)
     {
         std::string buffer = i.second.getName();
-        for (auto& c : i.second.getEdges())
-        {
-            sf::Vector2f posa = stations[buffer].getPosition();
-            sf::Vector2f posb = stations[temp[c.getDestination()].getName()].getPosition();
-            line.setColor(lignesColor[i.second.getLine()]);
-            line.setSource(posa);
-            line.setDestination(posb);
-            window.draw(line);
-        }
+        if (showLine[i.second.getLine()])
+            for (auto& c : i.second.getEdges())
+            {
+                sf::Vector2f posa = stations[buffer].getPosition();
+                sf::Vector2f posb = stations[temp[c.getDestination()].getName()].getPosition();
+                line.setColor(lignesColor[i.second.getLine()]);
+                line.setSource(posa);
+                line.setDestination(posb);
+                window.draw(line);
+            }
     }
 }
 
 void GraphDrawer::render_station()
 {
-    window.setView(leftPanel);
+    window.setView(rightPanel);
     for (auto& i : stations)
-        i.second.draw(window);
-    if (zoom <= -10)
+            i.second.draw(window);
+    if (zoom <= -6)
     {
         sf::View unzoomed(sf::FloatRect(0, 0, 3 * window.getSize().x / 5, window.getSize().y));
         sf::Vector2i currentPos;
         sf::Text temp;
 
-        unzoomed.setViewport(sf::FloatRect(0, 0, 0.6f, 1.0f));
+        unzoomed.setViewport(sf::FloatRect(0.4f, 0, 0.6f, 1.0f));
         temp.setFillColor(sf::Color::White);
         temp.setFont(font);
         temp.setCharacterSize(20);
@@ -293,49 +328,78 @@ void GraphDrawer::render_station()
             temp.setString(i.second.getName());
             temp.setPosition(window.mapPixelToCoords(currentPos));
             window.draw(temp);
-            window.setView(leftPanel);
+            window.setView(rightPanel);
         }
     }
 }
 
 void GraphDrawer::render_menu()
 {
+    sf::RenderTexture texture;
+    sf::Sprite menuSprite;
+
+    window.setView(leftPanel);
+    texture.create(2 * 1920 / 5, 1080);
+    render_menu_background(texture);
+    render_menu_destination(texture);
+    render_menu_boutons(texture);
+    for (int i = 0; i < 16; i++)
+        texture.draw(linesButton[i]);
+    texture.display();
+    menuSprite.setTexture(texture.getTexture());
+    menuSprite.setScale(leftPanel.getSize().x / texture.getSize().x, leftPanel.getSize().y / texture.getSize().y);
+    window.draw(menuSprite);
+    
+}
+
+
+void GraphDrawer::render_menu_background(sf::RenderTexture& texture)
+{
+    sf::RectangleShape rec;
+
+    rec.setPosition(0, 0);
+    rec.setFillColor(sf::Color(101, 180, 229));
+    rec.setSize(sf::Vector2f(texture.getSize().x, texture.getSize().y));
+    texture.draw(rec);
+
+    rec.setPosition(texture.getSize().x - 5, 0);
+    rec.setSize(sf::Vector2f(5, texture.getSize().y));
+    rec.setFillColor(sf::Color::White);
+    texture.draw(rec);
+}
+
+void GraphDrawer::render_menu_destination(sf::RenderTexture& texture)
+{
     sf::Text temp;
     std::string buffer;
-    sf::RectangleShape ligne;
 
-    window.setView(rightPanel);
-    ligne.setPosition(0, 0);
-    ligne.setFillColor(sf::Color(101, 180, 229));
-    ligne.setSize(sf::Vector2f(window.getSize().x, window.getSize().y));
-    window.draw(ligne);
-    ligne.setPosition(2 * window.getSize().x / 5 - 5, 0);
-    ligne.setSize(sf::Vector2f(5, window.getSize().y));
-    ligne.setFillColor(sf::Color::White);
-    window.draw(ligne);
-    
     temp.setFont(font);
     temp.setCharacterSize(20);
     temp.setFillColor(sf::Color(53, 48, 54));
     temp.setString("Depart");
-    temp.setPosition(sf::Vector2f(rightPanel.getSize().x / 2 - temp.getGlobalBounds().width / 2, 50));
+    temp.setPosition(sf::Vector2f(texture.getSize().x / 2 - temp.getGlobalBounds().width / 2, 100));
     temp.setStyle(sf::Text::Bold);
-    window.draw(temp);
+    texture.draw(temp);
     temp.setStyle(sf::Text::Regular);
     if (selected_station[0]) {
         temp.setString(selected_station[0]->getName());
-        temp.setPosition(sf::Vector2f(rightPanel.getSize().x / 2 - temp.getGlobalBounds().width / 2, 75));
-        window.draw (temp);temp.setStyle(sf::Text::Regular);    
+        temp.setPosition(sf::Vector2f(texture.getSize().x / 2 - temp.getGlobalBounds().width / 2, 125));
+        texture.draw (temp);temp.setStyle(sf::Text::Regular);    
     }
 
     temp.setString("Destination");
     temp.setStyle(sf::Text::Bold);
-    temp.setPosition(sf::Vector2f(rightPanel.getSize().x / 2 - temp.getGlobalBounds().width / 2, 100));
-    window.draw(temp);
+    temp.setPosition(sf::Vector2f(texture.getSize().x / 2 - temp.getGlobalBounds().width / 2, 150));
+    texture.draw(temp);
     temp.setStyle(sf::Text::Regular);
     if (selected_station[1]) {
         temp.setString(selected_station[1]->getName());
-        temp.setPosition(sf::Vector2f(rightPanel.getSize().x / 2 - temp.getGlobalBounds().width / 2, 125));
-        window.draw (temp);
+        temp.setPosition(sf::Vector2f(texture.getSize().x / 2 - temp.getGlobalBounds().width / 2, 175));
+        texture.draw (temp);
     }
+}
+
+void GraphDrawer::render_menu_boutons(sf::RenderTexture& texture)
+{
+
 }

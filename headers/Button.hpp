@@ -13,8 +13,8 @@ public:
 	Button(sf::Vector2f pos, sf::Vector2f dim);
 	virtual ~Button();
 
-	virtual bool button_pressed(sf::Window& window, const sf::Event& event) = 0;
-	virtual bool button_activated(sf::Window& window, const sf::Event& event) = 0;
+	virtual bool button_pressed(sf::RenderWindow& window, const sf::Event& event) = 0;
+	virtual bool button_activated(sf::RenderWindow& window, const sf::Event& event) = 0;
 
 	const bool isActivated();
 	void setActivated(const bool val);

@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <sstream>
 #include <map>    
 #include <unordered_map>
 #include <math.h>
@@ -10,21 +11,29 @@
 #include "Graph.hpp"
 #include "Station.hpp"
 #include "ThickLine.hpp"
+#include "ButtonTexture.hpp"
+#include "ButtonColor.hpp"
 
 class GraphDrawer
 {
 private:
     double zoom;
+    bool mode = 0;
+    std::map<std::string, bool> showLine;
     Graph& graph;
 
     sf::View leftPanel;
     sf::View rightPanel;
-    sf::Vector2f leftPanel_center;
+    sf::Vector2f rightPanel_center;
     sf::RenderWindow window;
     sf::Font font;
 
     std::unordered_map<std::string, sf::Color>      lignesColor;
     std::unordered_map<std::string, Station>        stations;
+
+
+    ButtonColor swapMode;
+    ButtonTexture linesButton[16];
 
     Station* hovered_station;
     Station* selected_station[2];
@@ -39,6 +48,8 @@ public:
     void display();
 
 private:
+    void init_button();
+
     int load_station(const std::string fileName);
     void load_color();
     void handleEvent();
@@ -52,5 +63,9 @@ private:
 
     void render_station();
     void render_line();
+
     void render_menu();
+    void render_menu_background(sf::RenderTexture& texture);
+    void render_menu_destination(sf::RenderTexture& texture);
+    void render_menu_boutons(sf::RenderTexture& texture);
 };

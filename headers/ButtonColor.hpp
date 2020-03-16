@@ -22,8 +22,8 @@ public:
 	ButtonColor(sf::Vector2f pos, sf::Vector2f dim);
 	virtual ~ButtonColor();
 
-	virtual bool button_pressed(sf::Window& window, const sf::Event& event);
-	virtual bool button_activated(sf::Window& window, const sf::Event& event);
+	virtual bool button_pressed(sf::RenderWindow& window, const sf::Event& event);
+	virtual bool button_activated(sf::RenderWindow& window, const sf::Event& event);
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
