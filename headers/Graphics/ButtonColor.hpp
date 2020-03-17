@@ -39,7 +39,6 @@ public:
 	void setString(const sf::String string);
 	void setCharacterSize(const unsigned int size);
 	void setColor(const sf::Color color);
-
-private:
 	void refreshText();
+
 };

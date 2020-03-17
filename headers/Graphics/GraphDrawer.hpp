@@ -1,3 +1,5 @@
+#pragma once
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -6,34 +8,30 @@
 #include <unordered_map>
 #include <math.h>
 #include <chrono>
-#include <SFML/Graphics.hpp>
 #include <memory>
+#include <thread>
+
+#include <SFML/Graphics.hpp>
+
 #include "Graph.hpp"
 #include "Station.hpp"
 #include "ThickLine.hpp"
-#include "ButtonTexture.hpp"
-#include "ButtonColor.hpp"
+#include "MenuDrawer.hpp"
 
 class GraphDrawer
 {
 private:
     double zoom;
-    bool mode = 0;
-    std::map<std::string, bool> showLine;
     Graph& graph;
 
     sf::View leftPanel;
     sf::View rightPanel;
-    sf::Vector2f rightPanel_center;
     sf::RenderWindow window;
     sf::Font font;
 
     std::unordered_map<std::string, sf::Color>      lignesColor;
     std::unordered_map<std::string, Station>        stations;
-
-
-    ButtonColor swapMode;
-    ButtonTexture linesButton[16];
+    MenuDrawer menu;
 
     Station* hovered_station;
     Station* selected_station[2];

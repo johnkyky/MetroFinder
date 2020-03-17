@@ -70,8 +70,14 @@ void ButtonColor::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	rectangle.setOutlineThickness(thickness);
 	rectangle.setOutlineColor(color_outline);
 
+	sf::CircleShape temp(2);
+	temp.setFillColor(sf::Color::Black);
+	temp.setOrigin(2, 2);
+	temp.setPosition(text.getPosition());
+
 	target.draw(rectangle);
 	target.draw(text);
+	target.draw(temp);
 }
 
 
@@ -114,8 +120,5 @@ void ButtonColor::setColor(const sf::Color color) {text.setFillColor(color);}
 
 void ButtonColor::refreshText()
 {
-	float bufferx = text.getGlobalBounds().left - text.getPosition().x + (text.getGlobalBounds().width / 2.f);
-	float buffery = text.getPosition().y - text.getGlobalBounds().top  - (text.getGlobalBounds().height / 2.f);
-	text.setOrigin(bufferx + text.getOrigin().x, text.getOrigin().y - buffery);
-	text.setPosition(this->getPosition().x + (dimension.x / 2.f), this->getPosition().y + (dimension.y / 2.f));
+	text.setPosition((this->getPosition().x + dimension.x / 2.f) - text.getGlobalBounds().width / 2, (this->getPosition().y + dimension.y / 2.f) - text.getGlobalBounds().height/ 2);
 }

@@ -15,7 +15,7 @@ Station::~Station()
 
 }
 
-int Station::handleEvent(const sf::RenderWindow& window, const bool isClicked)
+Station::status Station::handleEvent(const sf::RenderWindow& window, const bool isClicked)
 {
     sf::Mouse mouse;
     sf::Vector2i temp = mouse.getPosition(window);
@@ -27,13 +27,13 @@ int Station::handleEvent(const sf::RenderWindow& window, const bool isClicked)
         is_hovered = true;
         if (isClicked) {
             is_selected = !is_selected;
-            return is_selected ? 2 : 3;
+            return is_selected ? status::Selected : status::Unselected;
         }
-        return 1;
+        return status::Hovered;
     }
     else
         is_hovered = false;
-    return 0;
+    return status::None;
 }
 
 void Station::draw(sf::RenderWindow& window)
@@ -55,10 +55,10 @@ void Station::draw(sf::RenderWindow& window)
     window.draw(temp);
 }
 
-std::string Station::getName() {return name;}
-sf::Vector2f Station::getPosition() {return position;}
-bool Station::isHovered() {return is_hovered;}
-bool Station::isSelected() {return is_selected;}
-void Station::setSelected(bool val) {is_selected = val;}
-int Station::getId() {return id;};
-void Station::setId(int val) {id = val;};
+std::string Station::getName() const {return name;}
+sf::Vector2f Station::getPosition() const {return position;}
+bool Station::isHovered() const {return is_hovered;}
+bool Station::isSelected() const {return is_selected;}
+void Station::setSelected(bool val){is_selected = val;}
+int Station::getId() const {return id;};
+void Station::setId(int val){id = val;};

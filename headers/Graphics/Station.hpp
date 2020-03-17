@@ -1,3 +1,5 @@
+#pragma once
+
 #include <SFML/Graphics.hpp>
 #include <string>
 #include <math.h>
@@ -14,17 +16,19 @@ private:
     int id;
 
 public:
+    enum status{Hovered, Selected, Unselected,None};
+
     Station(std::string newName, int x, int y);
     Station();
     ~Station();
-    int handleEvent(const sf::RenderWindow& window, const bool isClicked = false);
+    status handleEvent(const sf::RenderWindow& window, const bool isClicked = false);
     void draw(sf::RenderWindow& window);
 
-    std::string getName();
-    sf::Vector2f getPosition();
-    bool isHovered();
-    bool isSelected();
+    std::string getName() const;
+    sf::Vector2f getPosition() const;
+    bool isHovered() const;
+    bool isSelected() const;
     void setSelected(bool val);
-    int getId();
+    int getId() const;
     void setId(int val);
 };
