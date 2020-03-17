@@ -31,6 +31,7 @@ private:
 
     std::unordered_map<std::string, sf::Color>      lignesColor;
     std::unordered_map<std::string, Station>        stations;
+    std::list<Vertex>  vertexPath;
     MenuDrawer menu;
 
     Station* hovered_station;
@@ -46,8 +47,6 @@ public:
     void display();
 
 private:
-    void init_button();
-
     int load_station(const std::string fileName);
     void load_color();
     void handleEvent();
@@ -61,6 +60,7 @@ private:
 
     void render_station();
     void render_line();
+    void render_path();
 
     void render_menu();
     void render_menu_background(sf::RenderTexture& texture);

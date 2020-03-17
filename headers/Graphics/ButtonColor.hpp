@@ -14,13 +14,15 @@ private:
 	sf::Color color_idle, color_active, color_pressed, color_outline;
 	sf::Color color_current;
 	float thickness;
-	sf::Font font;
+	const sf::Font* font;
 	sf::Text text;
 
 public:
 	ButtonColor();
 	ButtonColor(sf::Vector2f pos, sf::Vector2f dim);
 	virtual ~ButtonColor();
+
+	void setDimension(const sf::Vector2f dim);
 
 	virtual bool button_pressed(sf::RenderWindow& window, const sf::Event& event);
 	virtual bool button_activated(sf::RenderWindow& window, const sf::Event& event);

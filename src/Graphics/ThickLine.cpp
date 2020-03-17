@@ -40,8 +40,8 @@ void ThickLine::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	tri2[1].color = color;
 	tri2[2].color = color;
 
-	target.draw(tri1);
-	target.draw(tri2);
+	target.draw(tri1, states);
+	target.draw(tri2, states);
 }
 
 

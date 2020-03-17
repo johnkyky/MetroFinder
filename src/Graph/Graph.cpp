@@ -248,7 +248,7 @@ std::list<std::string> Graph::vertex_to_string(std::list<Vertex>& vertices_path)
 	std::list<std::string> res;
 	unsigned int duration = 0;
 
-	std::string prendre_ligne("Prendre la ligne "), ensuite("Ensuite prendre la ligne "),\
+	std::string prendre_ligne("- Prendre la ligne "), ensuite("- Ensuite prendre la ligne "),\
 		jusqua(" jusqu'a ");
 
 	auto head = vertices_path.begin();
@@ -284,11 +284,20 @@ std::list<std::string> Graph::vertex_to_string(std::list<Vertex>& vertices_path)
 			res.push_back(ensuite + line + jusqua + head->getName());
 		head++;
 	}
-
 	if(station == vertices_path.back().getName())
 		res.pop_back();
-
-	res.push_back("duree estimee du trajet : " + convert_second_to_string(duration));
+	for (auto& i : res)
+	{
+		for (int j = 40; j < i.size(); j += 40)
+		{	
+			int u;
+			for (u = j; u > 0 && i[u] != ' '; u--);
+			if (u == 0)
+				continue;
+			i.insert(u, 1, '\n');
+		}
+	}
+	res.push_back("\n== Duree estimee du trajet : " + convert_second_to_string(duration) + " ==");
 	return res;
 }
 

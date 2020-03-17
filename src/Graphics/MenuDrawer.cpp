@@ -6,7 +6,7 @@ const std::string& id_to_string(const int id)
     return convert[id];
 }
 
-MenuDrawer::MenuDrawer(sf::RenderWindow& newWindow, const sf::Font& newFont) : window{newWindow}, font{newFont}, currentMode{MenuDrawer::mode::Selection}
+MenuDrawer::MenuDrawer(sf::RenderWindow& newWindow) : window{newWindow}, currentMode{MenuDrawer::mode::Selection}
 {
     source      = nullptr;
     destination = nullptr;
@@ -15,7 +15,6 @@ MenuDrawer::MenuDrawer(sf::RenderWindow& newWindow, const sf::Font& newFont) : w
     {
         lineIsDisplayed[id_to_string(i)] = true;
     }
-    init_buttons();
 }
 
 MenuDrawer::~MenuDrawer() 
@@ -23,15 +22,20 @@ MenuDrawer::~MenuDrawer()
 
 }
 
+void MenuDrawer::init()
+{
+    init_buttons();
+}
+
 MenuDrawer::handleRes MenuDrawer::handleEvent(sf::Event& evt)
 {
     bool temp = false;
     sf::View v = window.getView();
-    /*if (swapMode.button_pressed(window, evt))
+    if (swapMode.button_pressed(window, evt) && source && destination)
     {
         currentMode = mode::DisplayPath;
         return handleRes::StartDijkstra;
-    }*/
+    }
     for (int i = 0; i < 16; i++)
     {
         temp = linesButton[i].button_activated(window, evt);
@@ -47,8 +51,6 @@ MenuDrawer::handleRes MenuDrawer::handleEvent(sf::Event& evt)
 
 void MenuDrawer::render()
 {
-    //swapMode.refreshText();
-
     render_background();
     if (currentMode == mode::Selection) 
     {
@@ -77,12 +79,17 @@ void MenuDrawer::setPathString(const std::list<std::string>&& path)
     pathString = path;
 }
 
-void MenuDrawer::setSource(const Station* &newSource)
+void MenuDrawer::setFont(const sf::Font& f)
+{
+    font = f;
+}
+
+void MenuDrawer::setSource(const Station* newSource)
 {
     source = newSource;
 }
 
-void MenuDrawer::setDestination(const Station* &newDestination)
+void MenuDrawer::setDestination(const Station* newDestination)
 {
     destination = newDestination;
 }
@@ -105,17 +112,19 @@ void MenuDrawer::init_buttons()
         linesButton[i].setPosition(sf::Vector2f(5 + i * 48, 10));
         linesButton[i].setDimension(sf::Vector2f(32.f, 32.f));
         stringCreator.str("");
-    }/*
-    for (int i = 0; i < 16; i++) {
+    }
+    for (int i = 0; i < 16; i++) 
+    {
         stringCreator << "ligne_" << id_to_string(i) << "a.png";
         linesButton[i].setActiveTexture(stringCreator.str());
         stringCreator.str("");
     }
-    for (int i = 0; i < 16; i++) {
-        stringCreator << "ligne_" << id_to_string(i) << "h.png";
+    for (int i = 0; i < 16; i++) 
+    {
+        stringCreator << "ligne_" << id_to_string(i) << "A.png";
         linesButton[i].setPressedTexture(stringCreator.str());
         stringCreator.str("");
-    }*/
+    }
     swapMode.setFont(font);
     swapMode.setColor(sf::Color::White);
     swapMode.setIdleColor(sf::Color(46, 192, 249));
@@ -124,10 +133,9 @@ void MenuDrawer::init_buttons()
     swapMode.setActiveColor(sf::Color(186, 39, 74));
     swapMode.setDimension(sf::Vector2f(384, 64));
     swapMode.setString("Calculer le trajet");
+    swapMode.setPosition(sf::Vector2f(192, 540));
     swapMode.setCharacterSize(25);
     swapMode.setOutlineThickness(2);
-    swapMode.setPosition(sf::Vector2f(192, 540));
-    //swapMode.refreshText();
 }
 
 void MenuDrawer::render_background()
@@ -162,7 +170,7 @@ void MenuDrawer::render_destsrc()
     temp.setStyle(sf::Text::Regular);
     if (source) {
         temp.setString(source->getName());
-        temp.move(0, 25);
+        temp.setPosition(sf::Vector2f(v.getSize().x / 2 - temp.getGlobalBounds().width / 2, 125));
         window.draw (temp);
         temp.setStyle(sf::Text::Regular);    
     }
@@ -174,7 +182,7 @@ void MenuDrawer::render_destsrc()
     temp.setStyle(sf::Text::Regular);
     if (destination) {
         temp.setString(destination->getName());
-        temp.move(0, 25);
+        temp.setPosition(sf::Vector2f(v.getSize().x / 2 - temp.getGlobalBounds().width / 2, 175));
         window.draw (temp);
     }
 }
@@ -185,17 +193,28 @@ void MenuDrawer::render_buttons()
     {
         window.draw(linesButton[i]);
     }
-
     window.draw(swapMode);
-    window.display();
 }
 
 void MenuDrawer::render_path()
 {
+    sf::Text temp;
+    temp.setCharacterSize(25);
+    temp.setColor(sf::Color::White);
+    temp.setFont(font);
+    temp.setPosition({10.f, 25});
 
+    for (auto& i : pathString)
+    {
+        temp.move(0, temp.getGlobalBounds().height + 5);
+        temp.setString(i);
+        window.draw(temp);
+    }
 }
 
 void MenuDrawer::render_return()
 {
 
 }
+
+ButtonColor& MenuDrawer::getSwapMode() {return swapMode;};
