@@ -19,7 +19,7 @@ class MenuDrawer
 {
 private:
     sf::RenderWindow& window;
-    const sf::Font& font;
+    sf::Font font;
 
     ButtonColor swapMode;
     ButtonTexture linesButton[16];
@@ -34,8 +34,9 @@ public:
     enum handleRes{StartDijkstra, ModeSwap, Exit, None};
     enum mode{Selection, DisplayPath};
 
-    MenuDrawer(sf::RenderWindow& newWindow, const sf::Font& newFont);
+    MenuDrawer(sf::RenderWindow& newWindow);
     ~MenuDrawer();
+    void init();
 
     MenuDrawer::handleRes handleEvent(sf::Event& evt);
     void render();
@@ -45,9 +46,13 @@ public:
     void setMode(MenuDrawer::mode newMode);
     void setPathString(const std::list<std::string>&& path);
 
-    void setSource(const Station* &newSource);
-    void setDestination(const Station* &newDestination);
+    void setFont(const sf::Font& f);
+
+    void setSource(const Station* newSource);
+    void setDestination(const Station* newDestination);
     void resetSourceDestination();
+
+    ButtonColor& getSwapMode();
 
 private:
     void init_buttons();

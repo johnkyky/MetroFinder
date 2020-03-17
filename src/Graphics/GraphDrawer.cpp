@@ -8,13 +8,14 @@ float mapTo(float a, float b, float c, float d, float val)
 }
 
 GraphDrawer::GraphDrawer(Graph& newGraph, const std::string stationPositions) : zoom {0}, graph{newGraph}, 
-window{sf::VideoMode(1920, 1080), "MetroFinder"}, menu(window, font), hovered_station{NULL}, selected_station{NULL, NULL}
+window{sf::VideoMode(1920, 1080), "MetroFinder"}, menu(window), hovered_station{NULL}, selected_station{NULL, NULL}
 {
     load_station(stationPositions);
     load_color();
 
     font.loadFromFile("font.ttf");
-
+    menu.setFont(font);
+    menu.init();
     window.setFramerateLimit(60);
     window.setVisible(false);
 
@@ -120,7 +121,8 @@ void GraphDrawer::handleEvent()
 
         if (temp == MenuDrawer::handleRes::StartDijkstra)
         {
-
+            vertexPath = graph.dijkstra(selected_station[0]->getId(), selected_station[1]->getId());
+            menu.setPathString(graph.vertex_to_string(vertexPath));
         }
         else if (temp == MenuDrawer::handleRes::ModeSwap)
         {
@@ -137,11 +139,6 @@ void GraphDrawer::handleEvent()
                 case sf::Event::MouseButtonPressed:
                     handle_click(evt, clicked);
                     break;
-                case sf::Event::Resized: /*
-                    rightPanel.setCenter(double(3 * window.getSize().x / 10), window.getSize().y/2);
-                    rightPanel.setSize(sf::Vector2f(double(3 * window.getSize().x / 5), window.getSize().y));
-                    leftPanel.setCenter(double(window.getSize().x / 5), window.getSize().y/2);
-                    leftPanel.setSize(sf::Vector2f(double(2 * window.getSize().x / 5), window.getSize().y));*/
                 default :
                     break;
             }
@@ -213,6 +210,7 @@ void GraphDrawer::handle_click(sf::Event evt, bool& clicked)
             if (selected_station[1])
                 selected_station[1]->setSelected(false);
             selected_station[0] = selected_station[1] = NULL;
+            menu.resetSourceDestination();
             break;
         case sf::Mouse::Left :
             clicked = true;
@@ -238,14 +236,6 @@ void GraphDrawer::handle_station(sf::Event evt, const bool clicked)
                 selected_station[1] = &i.second;
             } else
                 selected_station[0] = &i.second;
-            if (selected_station[0] && selected_station[1])
-            {
-                std::list<Vertex> vertexBuffer = graph.dijkstra(selected_station[0]->getId(), selected_station[1]->getId());
-                std::list<std::string> stringBuffer = graph.vertex_to_string(vertexBuffer);
-                for(auto& i : stringBuffer)
-                    std::cout << i << "\n";
-                printf("\n\n");
-            }
         } else if (temp == Station::Unselected) 
         {
             if (&i.second == selected_station[0])
@@ -260,6 +250,8 @@ void GraphDrawer::handle_station(sf::Event evt, const bool clicked)
             }
         }
     }
+    menu.setSource(selected_station[0]);
+    menu.setDestination(selected_station[1]);
 }
 
 
@@ -285,6 +277,33 @@ void GraphDrawer::render_line()
                 line.setDestination(posb);
                 window.draw(line);
             }
+    }
+    render_path();
+}
+
+void GraphDrawer::render_path()
+{
+    if (vertexPath.size() == 0)
+        return;
+    ThickLine line;
+
+    line.setThickness(6);
+    line.setColor(sf::Color::Red);
+    auto current = vertexPath.begin();
+    auto next = vertexPath.begin();
+    next++;
+    while(next != vertexPath.end())
+    {
+        if (current->getName() == next->getName()) {
+            current++;
+            next++;
+            continue;
+        }
+        line.setSource(stations[current->getName()].getPosition());
+        line.setDestination(stations[next->getName()].getPosition());
+        window.draw(line);
+        current++;
+        next++;
     }
 }
 

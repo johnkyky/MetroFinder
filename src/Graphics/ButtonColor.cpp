@@ -95,11 +95,15 @@ void ButtonColor::setPressedColor(const sf::Color color) {color_pressed = color;
 
 void ButtonColor::setOutlineColor(const sf::Color color) {color_outline = color;}
 
-void ButtonColor::setOutlineThickness(const float thick) {thickness = thick;}
+void ButtonColor::setOutlineThickness(const float thick) 
+{
+	thickness = thick;
+	refreshText();
+}
 
 void ButtonColor::setFont(const sf::Font& f)
 {
-	font = f;
+	font = &f;
 	text.setFont(f);
 	refreshText();
 }
@@ -114,6 +118,12 @@ void ButtonColor::setCharacterSize(const unsigned int size)
 {
 	text.setCharacterSize(size);
 	refreshText();	
+}
+
+void ButtonColor::setDimension(const sf::Vector2f dim)
+{
+	Button::setDimension(dim);
+	refreshText();
 }
 
 void ButtonColor::setColor(const sf::Color color) {text.setFillColor(color);}
