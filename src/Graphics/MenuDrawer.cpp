@@ -41,6 +41,7 @@ MenuDrawer::handleRes MenuDrawer::handleEvent(sf::Event& evt)
             return handleRes::None;
         }
     }
+    
     return handleRes::None;
 }
 
@@ -126,6 +127,7 @@ void MenuDrawer::init_buttons()
     swapMode.setCharacterSize(25);
     swapMode.setOutlineThickness(2);
     swapMode.setPosition(sf::Vector2f(192, 540));
+    //swapMode.refreshText();
 }
 
 void MenuDrawer::render_background()
@@ -183,15 +185,9 @@ void MenuDrawer::render_buttons()
     {
         window.draw(linesButton[i]);
     }
-    int a;
-    //swapMode.refreshText();
+
     window.draw(swapMode);
     window.display();
-    std::cin >> a;
-    swapMode.refreshText();
-    window.draw(swapMode);
-    window.display();
-    std::cin >> a;
 }
 
 void MenuDrawer::render_path()

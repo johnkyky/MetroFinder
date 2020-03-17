@@ -252,10 +252,14 @@ std::list<std::string> Graph::vertex_to_string(std::list<Vertex>& vertices_path)
 		jusqua(" jusqu'a ");
 
 	auto head = vertices_path.begin();
+
+	std::string line;
+	std::string station;
+
 	while(head != vertices_path.end())
 	{	
-		std::string line = head->getLine();
-		std::string station = head->getName();
+		line = head->getLine();
+		station = head->getName();
 
 		while(line == head->getLine())
 		{
@@ -273,11 +277,17 @@ std::list<std::string> Graph::vertex_to_string(std::list<Vertex>& vertices_path)
 
 		head--;
 		if(res.empty())
+		{
 			res.push_back(prendre_ligne + line + " de " + station + jusqua + head->getName());
+		}
 		else
 			res.push_back(ensuite + line + jusqua + head->getName());
 		head++;
 	}
+
+	if(station == vertices_path.back().getName())
+		res.pop_back();
+
 	res.push_back("duree estimee du trajet : " + convert_second_to_string(duration));
 	return res;
 }
