@@ -132,3 +132,10 @@ void ButtonColor::refreshText()
 {
 	text.setPosition((this->getPosition().x + dimension.x / 2.f) - text.getGlobalBounds().width / 2, (this->getPosition().y + dimension.y / 2.f) - text.getGlobalBounds().height/ 2);
 }
+
+
+void ButtonColor::setDimension(const sf::Vector2f dim)
+{
+	dimension = dim;
+	refreshText();
+}

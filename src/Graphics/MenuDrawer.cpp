@@ -45,13 +45,12 @@ MenuDrawer::handleRes MenuDrawer::handleEvent(sf::Event& evt)
             return handleRes::None;
         }
     }
+    
     return handleRes::None;
 }
 
 void MenuDrawer::render()
 {
-    //swapMode.refreshText();
-
     render_background();
     if (currentMode == mode::Selection) 
     {
@@ -113,17 +112,19 @@ void MenuDrawer::init_buttons()
         linesButton[i].setPosition(sf::Vector2f(5 + i * 48, 10));
         linesButton[i].setDimension(sf::Vector2f(32.f, 32.f));
         stringCreator.str("");
-    }/*
-    for (int i = 0; i < 16; i++) {
+    }
+    for (int i = 0; i < 16; i++) 
+    {
         stringCreator << "ligne_" << id_to_string(i) << "a.png";
         linesButton[i].setActiveTexture(stringCreator.str());
         stringCreator.str("");
     }
-    for (int i = 0; i < 16; i++) {
-        stringCreator << "ligne_" << id_to_string(i) << "h.png";
+    for (int i = 0; i < 16; i++) 
+    {
+        stringCreator << "ligne_" << id_to_string(i) << "A.png";
         linesButton[i].setPressedTexture(stringCreator.str());
         stringCreator.str("");
-    }*/
+    }
     swapMode.setFont(font);
     swapMode.setColor(sf::Color::White);
     swapMode.setIdleColor(sf::Color(46, 192, 249));
