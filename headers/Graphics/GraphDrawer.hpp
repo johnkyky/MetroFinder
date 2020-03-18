@@ -37,6 +37,12 @@ private:
     Station* hovered_station;
     Station* selected_station[2];
 
+    sf::RenderTexture texturePath;
+    sf::Sprite spritePath;
+    sf::Shader shader;
+    sf::Clock time;
+
+
 public:
     GraphDrawer(Graph& newGraph, const std::string stationPositions);
     ~GraphDrawer();
@@ -66,4 +72,6 @@ private:
     void render_menu_background(sf::RenderTexture& texture);
     void render_menu_destination(sf::RenderTexture& texture);
     void render_menu_boutons(sf::RenderTexture& texture);
+
+    void load_shader();
 };

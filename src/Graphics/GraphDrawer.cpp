@@ -24,6 +24,9 @@ window{sf::VideoMode(1920, 1080), "MetroFinder"}, menu(window), hovered_station{
     leftPanel.setCenter(double(window.getSize().x / 5), window.getSize().y/2);
     leftPanel.setSize(sf::Vector2f(double(2 * window.getSize().x / 5), window.getSize().y));
     leftPanel.setViewport(sf::FloatRect(0.0, 0.0, 0.4f, 1.0f));
+
+    ////////////////////////////////////////////////////////////////////////////
+    load_shader();
 }
 
 GraphDrawer::~GraphDrawer()
@@ -283,6 +286,9 @@ void GraphDrawer::render_line()
 
 void GraphDrawer::render_path()
 {
+    ////////////////////////////////////////////////////////////////////////////
+    texturePath.clear(sf::Color(0, 0, 0, 0));
+
     if (vertexPath.size() == 0)
         return;
     ThickLine line;
@@ -301,10 +307,17 @@ void GraphDrawer::render_path()
         }
         line.setSource(stations[current->getName()].getPosition());
         line.setDestination(stations[next->getName()].getPosition());
-        window.draw(line);
+        texturePath.draw(line);
         current++;
         next++;
     }
+
+    ////////////////////////////////////////////////////////////////////////////
+    texturePath.display();
+    spritePath.setTexture(texturePath.getTexture());
+    shader.setUniform("time", time.getElapsedTime().asSeconds());
+    shader.setUniform("texture", sf::Shader::CurrentTexture);
+    window.draw(spritePath, &shader);
 }
 
 void GraphDrawer::render_station()
@@ -332,4 +345,16 @@ void GraphDrawer::render_station()
             window.setView(rightPanel);
         }
     }
+}
+
+
+void GraphDrawer::load_shader()
+{
+    texturePath.create(window.getSize().x * 3/5, window.getSize().y);
+
+    if(!sf::Shader::isAvailable())
+        std::cerr << "Shader are not available" << std::endl;
+
+    if(!shader.loadFromFile("./img/shader.frag", sf::Shader::Fragment))
+        std::cerr << "Error while shaders" << std::endl;
 }

@@ -131,7 +131,7 @@ int Graph::add_edge(const unsigned int id1, const unsigned int id2, const unsign
 	return 1;
 }
 
-std::list<Vertex> Graph::dijkstra(unsigned int idSource, unsigned int idDestintion)
+std::list<Vertex> Graph::dijkstra(unsigned int idSource, unsigned int idDestination)
 {
 	////VARIABLE
 	unsigned int distance[vertices.size()];
@@ -153,10 +153,10 @@ std::list<Vertex> Graph::dijkstra(unsigned int idSource, unsigned int idDestinti
 		distance[i->getDestination()] = i->getDuration();
 		pere[i->getDestination()] = i->getSource();
 	}
-
+	
 	///BOUCLE PRINCIPAL
 	while(V.size() < vertices.size())
-	{
+	{	
 		unsigned int indice_min = dijkstra_find_indice_min_distance(distance, V);
 		V.push_back(indice_min);
 
@@ -173,8 +173,10 @@ std::list<Vertex> Graph::dijkstra(unsigned int idSource, unsigned int idDestinti
 				pere[i->getDestination()] = indice_min;
 			}
 		}
+		if(V.back() == idDestination)
+			break;
 	}
-	std::list<Vertex> test = dijkstra_get_path(idSource, idDestintion, pere);
+	std::list<Vertex> test = dijkstra_get_path(idSource, idDestination, pere);
 	return test;
 }
 
@@ -226,12 +228,12 @@ unsigned int Graph::dijkstra_find_indice_min_distance(unsigned int *d, const std
 }
 
 
-std::list<Vertex> Graph::dijkstra_get_path(const unsigned int idSource, const unsigned int idDestintion, const unsigned int *pere)
+std::list<Vertex> Graph::dijkstra_get_path(const unsigned int idSource, const unsigned int idDestination, const unsigned int *pere)
 {
 	std::list<Vertex> res;
 
-	res.push_front(vertices.find(idDestintion)->second);
-	unsigned int indice = pere[idDestintion];
+	res.push_front(vertices.find(idDestination)->second);
+	unsigned int indice = pere[idDestination];
 
 	while(indice != idSource)
 	{
@@ -263,13 +265,13 @@ std::list<std::string> Graph::vertex_to_string(std::list<Vertex>& vertices_path)
 
 		while(line == head->getLine())
 		{
-			unsigned int idDestintion = head->getId();
+			unsigned int idDestination = head->getId();
 			head++;
 			if(head == vertices_path.end())
 				break;
 			unsigned int idSource = head->getId();
 
-			unsigned int bufferDuration = get_duration_edge_list(head->getEdges(), idSource, idDestintion);
+			unsigned int bufferDuration = get_duration_edge_list(head->getEdges(), idSource, idDestination);
 			if(!bufferDuration)
 				printf("je sais pas quoi mettre mais on a pas trouver la edge\n");
 			duration += bufferDuration;
@@ -288,7 +290,7 @@ std::list<std::string> Graph::vertex_to_string(std::list<Vertex>& vertices_path)
 		res.pop_back();
 	for (auto& i : res)
 	{
-		for (int j = 40; j < i.size(); j += 40)
+		for (unsigned int j = 40; j < i.size(); j += 40)
 		{	
 			int u;
 			for (u = j; u > 0 && i[u] != ' '; u--);

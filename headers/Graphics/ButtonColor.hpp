@@ -42,6 +42,4 @@ public:
 	void setCharacterSize(const unsigned int size);
 	void setColor(const sf::Color color);
 	void refreshText();
-
-	void setDimension(const sf::Vector2f dim);
 };
