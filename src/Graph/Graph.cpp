@@ -155,8 +155,10 @@ std::list<Vertex> Graph::dijkstra(unsigned int idSource, unsigned int idDestinti
 	}
 
 	///BOUCLE PRINCIPAL
+	int a = 0;
 	while(V.size() < vertices.size())
 	{
+		a++;
 		unsigned int indice_min = dijkstra_find_indice_min_distance(distance, V);
 		V.push_back(indice_min);
 
@@ -173,9 +175,13 @@ std::list<Vertex> Graph::dijkstra(unsigned int idSource, unsigned int idDestinti
 				pere[i->getDestination()] = indice_min;
 			}
 		}
+
+		if(vertices.find(idDestintion)->second.getName() == vertices.find(indice_min)->second.getName())
+			break;
 	}
-	std::list<Vertex> test = dijkstra_get_path(idSource, idDestintion, pere);
-	return test;
+
+	std::list<Vertex> vert = dijkstra_get_path(idSource, idDestintion, pere);
+	return vert;
 }
 
 
