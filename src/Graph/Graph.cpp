@@ -288,7 +288,7 @@ std::list<std::string> Graph::vertex_to_string(std::list<Vertex>& vertices_path)
 		res.pop_back();
 	for (auto& i : res)
 	{
-		for (int j = 40; j < i.size(); j += 40)
+		for (unsigned int j = 40; j < i.size(); j += 40)
 		{	
 			int u;
 			for (u = j; u > 0 && i[u] != ' '; u--);

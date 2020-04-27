@@ -24,6 +24,9 @@ window{sf::VideoMode(1920, 1080), "MetroFinder"}, menu(window, stations), hovere
     leftPanel.setCenter(double(window.getSize().x / 5), window.getSize().y/2);
     leftPanel.setSize(sf::Vector2f(double(2 * window.getSize().x / 5), window.getSize().y));
     leftPanel.setViewport(sf::FloatRect(0.0, 0.0, 0.4f, 1.0f));
+
+
+    init_shader("img/shader");
 }
 
 GraphDrawer::~GraphDrawer()
@@ -183,7 +186,13 @@ void GraphDrawer::render()
 {
     window.setView(rightPanel);
     render_line();
+
+    if(shaderIsLoaded)
+        render_shader();
+
+
     render_station();
+
     window.setView(leftPanel);
     menu.render();
 }
@@ -322,6 +331,9 @@ void GraphDrawer::render_path()
     auto current = vertexPath.begin();
     auto next = vertexPath.begin();
     next++;
+
+    ///
+    renderTexture.clear(sf::Color(0, 0, 0, 0));
     while(next != vertexPath.end())
     {
         if (current->getName() == next->getName()) {
@@ -331,7 +343,12 @@ void GraphDrawer::render_path()
         }
         line.setSource(stations[current->getName()].getPosition());
         line.setDestination(stations[next->getName()].getPosition());
-        window.draw(line);
+        
+        if(shaderIsLoaded)
+            renderTexture.draw(line);
+        else
+            window.draw(line);
+
         current++;
         next++;
     }
@@ -362,4 +379,35 @@ void GraphDrawer::render_station()
             window.setView(rightPanel);
         }
     }
+}
+
+
+// Fonction de shader
+void GraphDrawer::init_shader(std::string fileName)
+{
+    shaderIsLoaded = true;
+
+    if(!sf::Shader::isAvailable())
+    {
+        shaderIsLoaded = false;
+    }
+    if(!shader.loadFromFile(fileName, sf::Shader::Fragment))
+    {
+        shaderIsLoaded = false;
+    }
+    else
+        std::cout << "Loading shader " + fileName + "..." << std::endl;
+
+    renderTexture.create(double(3 * window.getSize().x / 5), window.getSize().y);
+    renderTexture.clear(sf::Color(0, 0, 0, 0));
+}
+
+
+void GraphDrawer::render_shader()
+{
+    renderTexture.display();
+    shader.setUniform("time", time.getElapsedTime().asSeconds());
+    shader.setUniform("texture", sf::Shader::CurrentTexture);
+    sf::Sprite spriteTexture(renderTexture.getTexture());
+    window.draw(spriteTexture, &shader);
 }
