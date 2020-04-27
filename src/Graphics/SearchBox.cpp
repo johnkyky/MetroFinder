@@ -58,7 +58,6 @@ SearchBox::Status SearchBox::handleEvent(sf::Event& evt, sf::RenderWindow& windo
         if (evt.text.unicode == 13)
         {
             if (search_matchs.size() > 0)
-{
             {
                 input = search_matchs.front().getName();
             }

@@ -186,11 +186,8 @@ void GraphDrawer::render()
 {
     window.setView(rightPanel);
     render_line();
-
-    if(shaderIsLoaded)
+    if(shaderIsLoaded && vertexPath.size() != 0)
         render_shader();
-
-
     render_station();
 
     window.setView(leftPanel);

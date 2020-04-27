@@ -57,13 +57,16 @@ MenuDrawer::handleRes MenuDrawer::handleEvent(sf::Event& evt)
             return handleRes::ModeSwap;
         }
     }
-    for (int i = 0; i < 16; i++)
+    if (currentMode == mode::Selection)
     {
-        temp = linesButton[i].button_activated(window, evt);
-        if (temp == lineIsDisplayed[id_to_string(i)]) 
+        for (int i = 0; i < 16; i++)
         {
-            lineIsDisplayed[id_to_string(i)] = !temp;
-            return handleRes::None;
+            temp = linesButton[i].button_activated(window, evt);
+            if (temp == lineIsDisplayed[id_to_string(i)]) 
+            {
+                lineIsDisplayed[id_to_string(i)] = !temp;
+                return handleRes::None;
+            }
         }
     }
     
