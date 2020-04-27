@@ -58,6 +58,7 @@ SearchBox::Status SearchBox::handleEvent(sf::Event& evt, sf::RenderWindow& windo
         if (evt.text.unicode == 13)
         {
             if (search_matchs.size() > 0)
+{
             {
                 input = search_matchs.front().getName();
             }
@@ -163,7 +164,7 @@ void SearchBox::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 bool SearchBox::getStation(Station& res)
 {
-    if (search_matchs.size() > 0)
+    if (search_matchs.size() > 0 && has_text)
     {
         input = search_matchs.front().getName();
         res = search_matchs.front();
@@ -198,8 +199,6 @@ void SearchBox::setInput(const std::string station)
     if (station == "")
         has_text = false;
     else
-    {
         has_text = true;
-        update_match();
-    }
+    update_match();
 }

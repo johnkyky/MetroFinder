@@ -42,9 +42,12 @@ MenuDrawer::handleRes MenuDrawer::handleEvent(sf::Event& evt)
         if (currentMode == mode::Selection)
         {
             Station temp;
+            if (!sourceBox.getStation(temp) || !destinationBox.getStation(temp))
+            {
+                return handleRes::None;
+            }
             swapMode.setString("Retour");
-            if (sourceBox.getStation(temp) && destinationBox.getStation(temp));
-                currentMode = mode::DisplayPath;
+            currentMode = mode::DisplayPath;
             return handleRes::StartDijkstra;
         }
         else

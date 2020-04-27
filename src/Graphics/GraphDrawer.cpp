@@ -120,12 +120,25 @@ void GraphDrawer::handleEvent()
         MenuDrawer::handleRes temp = menu.handleEvent(evt);
         if (temp == MenuDrawer::handleRes::StartDijkstra)
         {
+            if (selected_station[0])
+                selected_station[0]->setSelected(false);
+            selected_station[0] = &stations[menu.getSource().getName()];
+            selected_station[0]->setSelected(true);
+            if (selected_station[1])
+                selected_station[1]->setSelected(false);
+            selected_station[1] = &stations[menu.getDestination().getName()];
+            selected_station[1]->setSelected(true);
             vertexPath = graph.dijkstra(menu.getSource().getId(), menu.getDestination().getId());
             menu.setPathString(graph.vertex_to_string(vertexPath));
         }
         else if (temp == MenuDrawer::handleRes::ModeSwap)
         {
             vertexPath.clear();
+            selected_station[0]->setSelected(false);
+            selected_station[1]->setSelected(false);
+            selected_station[0] = NULL;
+            selected_station[1] = NULL;
+            menu.resetSourceDestination();
         }
         else if (temp == MenuDrawer::handleRes::SourceSwap)
         {
