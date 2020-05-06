@@ -264,7 +264,6 @@ std::list<std::string> Graph::vertex_to_string(std::list<Vertex>& vertices_path)
 		line = head->getLine();
 		station = head->getName();
 		oldDestination = head->getId();
-		//oldOldDestination = head->getId();
 
 
 		while(line == head->getLine())
@@ -293,8 +292,6 @@ std::list<std::string> Graph::vertex_to_string(std::list<Vertex>& vertices_path)
 
 		head--;
 
-		
-		///calculer le terminus retrun string
 		std::cout << oldOldDestination << " " << oldDestination << "\n";
 		std::string terminus;
 		if(oldOldDestination == -1)
