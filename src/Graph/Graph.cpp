@@ -145,20 +145,24 @@ int Graph::add_edge(const unsigned int id1, const unsigned int id2, const unsign
 std::list<Vertex> Graph::dijkstra(unsigned int idSource, unsigned int idDestintion)
 {
 	////VARIABLE
-	unsigned int distance[vertices.size()];
-	unsigned int pere[vertices.size()];
-	std::vector<unsigned int> V;
+	unsigned int distance[vertices.size()];   // tableau de distances entre la source et les autres sommets
+	unsigned int pere[vertices.size()];		  // tableau de pere
+	std::vector<unsigned int> V;			  // tableau des sommets deja traités
 
-	///INITIALISATION
+
+	/// INITIALISATION
 	for (unsigned int i = 0; i < vertices.size(); ++i)
 	{
-		distance[i] = UINT_MAX;
-		pere[i] = UINT_MAX;
+		distance[i] = UINT_MAX; // initialise le tableau de distance à l'infini
+		pere[i] = UINT_MAX;		// initialise le tableau de pere à l'infini
 	}
-	V.push_back(idSource);
+	V.push_back(idSource); // on ajoute au tableau des sommets traités la source du pathfinding
+	distance[idSource] = 0; // distance entre la source et la sources est de 0
+	
+	// permet de recupérer les arretes valide pour commencer le pathfinding
+	std::list<Edge> edges = dijkstra_find_valid_edge(idSource, V); 
 
-	distance[idSource] = 0;
-	std::list<Edge> edges = dijkstra_find_valid_edge(idSource, V);
+	// pour tous les sommets valides on initialise le père et la distance avec la source à i
 	for (auto i = edges.begin(); i != edges.end(); ++i)
 	{
 		distance[i->getDestination()] = i->getDuration();
@@ -166,15 +170,19 @@ std::list<Vertex> Graph::dijkstra(unsigned int idSource, unsigned int idDestinti
 	}
 
 	///BOUCLE PRINCIPAL
-	int a = 0;
-	while(V.size() < vertices.size())
+	while(V.size() < vertices.size())// tant que pas tous les sommets ont été traité
 	{
-		a++;
+		// on cherche l'indice dans le table distance avec la plus petite valeur
 		unsigned int indice_min = dijkstra_find_indice_min_distance(distance, V);
-		V.push_back(indice_min);
+		V.push_back(indice_min);// ajoute dans les sommets traités
 
+		// on cherche la liste des arretes valides du sommet indice_min
 		std::list<Edge> edges = dijkstra_find_valid_edge(indice_min, V);
 
+		// pour tous les arretes dans edges on regarde si la distance est plus petite que celle existant deja
+		// si oui on modifie le tableau pere avec l'id de indice_min, 
+			//et la distance avec la distance existante a l'indice + la distance de l'arrete
+		// sinon on ne fait rien on passe à l'arrete suivante
 		for (auto& i  : edges)
 		{
 			unsigned int new_duration = distance[indice_min] + i.getDuration();
@@ -186,10 +194,13 @@ std::list<Vertex> Graph::dijkstra(unsigned int idSource, unsigned int idDestinti
 				pere[i.getDestination()] = indice_min;
 			}
 		}
+		
+		//si on a analysé une station qui a le meme nom (meme gare mais pas meme quai) on termine l'algo
 		if(vertices.find(idDestintion)->second.getName() == vertices.find(indice_min)->second.getName())
 			break;
 	}
 
+	// analyse le tableau pere et return la liste des sommets de passage dans l'ordre
 	std::list<Vertex> vert = dijkstra_get_path(idSource, idDestintion, pere);
 	return vert;
 }

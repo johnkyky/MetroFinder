@@ -14,11 +14,10 @@ private:
 
 public:
 	Edge();
-
-	//list d'init
 	Edge(const unsigned int source, const unsigned int destination, const unsigned int duration, bool isMetro = true);
 	~Edge();
 
+	///Getter Setter
 	unsigned int getSource();
 	void setSource(const unsigned int val);
 
