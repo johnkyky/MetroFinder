@@ -19,10 +19,10 @@ ButtonTexture::~ButtonTexture()
 
 bool ButtonTexture::button_pressed(sf::RenderWindow& window, const sf::Event& event)
 {
-	if(window.mapPixelToCoords(sf::Mouse::getPosition()).x >= this->getPosition().x &&
-		window.mapPixelToCoords(sf::Mouse::getPosition()).x <= this->getPosition().x + dimension.x &&
-		window.mapPixelToCoords(sf::Mouse::getPosition()).y >= this->getPosition().y &&
-		window.mapPixelToCoords(sf::Mouse::getPosition()).y <= this->getPosition().y + dimension.y)
+	if(window.mapPixelToCoords(sf::Mouse::getPosition(window)).x >= this->getPosition().x &&
+		window.mapPixelToCoords(sf::Mouse::getPosition(window)).x <= this->getPosition().x + dimension.x &&
+		window.mapPixelToCoords(sf::Mouse::getPosition(window)).y >= this->getPosition().y &&
+		window.mapPixelToCoords(sf::Mouse::getPosition(window)).y <= this->getPosition().y + dimension.y)
 	{
 		if(event.type == sf::Event::MouseButtonPressed && sf::Mouse::isButtonPressed(sf::Mouse::Left))
 		{

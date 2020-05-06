@@ -31,7 +31,7 @@ SearchBox::Status SearchBox::handleEvent(sf::Event& evt, sf::RenderWindow& windo
         if (pos.y > dimensions.y + getPosition().y && pos.x >= getPosition().x && pos.x <= getPosition().x + dimensions.x)
         {
             hovered_choice = (pos.y - getPosition().y) / dimensions.y - 1;
-            if (hovered_choice > search_matchs.size())
+            if (hovered_choice > (int)search_matchs.size())
                 hovered_choice = search_matchs.size();
         }
     }
@@ -82,7 +82,7 @@ SearchBox::Status SearchBox::handleEvent(sf::Event& evt, sf::RenderWindow& windo
 
 bool check_if_match(const std::string a, const std::string b)
 {
-    for (int i = 0; i < a.size(); i++)
+    for (size_t i = 0; i < a.size(); i++)
     {
         if (tolower(a[i]) != tolower(b[i]))
             return false;
@@ -136,7 +136,7 @@ void SearchBox::draw(sf::RenderTarget& target, sf::RenderStates states) const
         for (size_t i = 0; i < (5 < search_matchs.size() ? 5 : search_matchs.size()); i++)
         {
             rec.move(0, dimensions.y);
-            if (i == hovered_choice)
+            if ((int)i == hovered_choice)
             {
                 rec.setFillColor(sf::Color::White);
             }

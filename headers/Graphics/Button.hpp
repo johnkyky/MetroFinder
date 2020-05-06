@@ -20,6 +20,7 @@ public:
 	void setActivated(const bool val);
 
 	void setDimension(const sf::Vector2f dim);
+	sf::Vector2f getDimension();
 
 protected:
 	sf::Vector2f dimension;

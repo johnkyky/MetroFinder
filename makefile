@@ -23,7 +23,7 @@ _GRAPHICS_OBJ = $(patsubst %,$(graphicdir)/%,$(GRAPHICSOBJ))
 run: MetroFinder
 	./MetroFinder
 
-MetroFinder: $(_GRAPH_OBJ) $(_GRAPHICS_OBJ)
+MetroFinder: $(graphdir) $(graphicdir) $(_GRAPH_OBJ) $(_GRAPHICS_OBJ)
 	$(cc) -I$(graphicheaders) -I$(graphheaders)  $(CFLAGS) $(SFFLAGS) src/main.cpp $(_GRAPH_OBJ) $(_GRAPHICS_OBJ) -o MetroFinder
 
 $(graphdir)/%.o: $(graphsrc)/%.cpp $(graphheaders)/%.hpp
@@ -32,6 +32,15 @@ $(graphdir)/%.o: $(graphsrc)/%.cpp $(graphheaders)/%.hpp
 $(graphicdir)/%.o: $(graphicsrc)/%.cpp $(graphicheaders)/%.hpp
 	$(cc) -c -I$(graphicheaders) -I$(graphheaders) $(CFLAGS)  $(SFFLAGS) $< $2 -o $@
 
+$(graphdir) : $(objdir)
+	mkdir $(graphdir)
+
+$(graphicdir) : $(objdir)
+	mkdir $(graphicdir)
+
+$(objdir) :
+	mkdir $(objdir)
+
 clear:
-	rm obj/*
+	rm -rf obj
 	rm MetroFinder

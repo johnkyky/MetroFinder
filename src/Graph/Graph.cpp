@@ -65,34 +65,44 @@ int Graph::load_from_file(std::string fileName)
 		vertices[read.getSource()].add_edge(read);
 		fileStream >> buffer;
 	}
-	load_line();
+	spread_line();
 	return 1;
 }
 
-
-void Graph::load_line()
+void Graph::spread_line()
 {
+	// Pile pour stocker les ids des stations a traiter
 	std::stack<unsigned int> to_treat;
-
+	// Pour chaque station dans le graph
 	for (auto& station : vertices)
 	{
-		if (station.second.getLine() == "")
+		// Si la station a une ligne définie et n'est pas marqué 
+		// (correspond a un terminus)
+		if (station.second.getLine() == "" || station.second.getMarked())
 			continue;
+		station.second.setMarked(1);
+		// on rajoute la station sur la pile
 		to_treat.push(station.second.getId());
+		// parcours en profondeur
 		while (!to_treat.empty())
 		{
 			Vertex& buffer = vertices[to_treat.top()];
-			
 			to_treat.pop(); 
+			// pour chaque connexions de la station courantes
 			for (auto& e : buffer.getEdges())
 			{
-				if (e.getMetro() == false || vertices[e.getDestination()].getLine() != "")
+				//Si la liaison n'est pas de la marche (meme ligne) et que la station n'a pas de ligne définie
+				if (e.getMetro() == false || vertices[e.getDestination()].getLine() != "" || vertices[e.getDestination()].getMarked())
 					continue;
-				vertices[e.getDestination()].setLine(buffer.getLine());
+				// on définie la ligne et on push la nouvelle station sur la pile
+				Vertex& tmp = vertices[e.getDestination()];
+				tmp.setLine(buffer.getLine());
+				tmp.setMarked(1);
 				to_treat.push(e.getDestination());
 			}
 		}
 	}
+	unmarkAll();
 }
 
 std::map<unsigned int, Vertex>& Graph::getVertices()
@@ -156,27 +166,32 @@ std::list<Vertex> Graph::dijkstra(unsigned int idSource, unsigned int idDestinti
 	}
 
 	///BOUCLE PRINCIPAL
+	int a = 0;
 	while(V.size() < vertices.size())
 	{
+		a++;
 		unsigned int indice_min = dijkstra_find_indice_min_distance(distance, V);
 		V.push_back(indice_min);
 
 		std::list<Edge> edges = dijkstra_find_valid_edge(indice_min, V);
 
-		for (auto i = edges.begin(); i != edges.end(); ++i)
+		for (auto& i  : edges)
 		{
-			unsigned int new_duration = distance[indice_min] + i->getDuration();
-			unsigned int old_duration = distance[i->getDestination()];
+			unsigned int new_duration = distance[indice_min] + i.getDuration();
+			unsigned int old_duration = distance[i.getDestination()];
 
 			if(new_duration < old_duration)
 			{
-				distance[i->getDestination()] = new_duration;
-				pere[i->getDestination()] = indice_min;
+				distance[i.getDestination()] = new_duration;
+				pere[i.getDestination()] = indice_min;
 			}
 		}
+		if(vertices.find(idDestintion)->second.getName() == vertices.find(indice_min)->second.getName())
+			break;
 	}
-	std::list<Vertex> test = dijkstra_get_path(idSource, idDestintion, pere);
-	return test;
+
+	std::list<Vertex> vert = dijkstra_get_path(idSource, idDestintion, pere);
+	return vert;
 }
 
 
@@ -265,7 +280,6 @@ std::list<std::string> Graph::vertex_to_string(std::list<Vertex>& vertices_path)
 		station = head->getName();
 		oldDestination = head->getId();
 
-
 		while(line == head->getLine())
 		{
 
@@ -291,8 +305,6 @@ std::list<std::string> Graph::vertex_to_string(std::list<Vertex>& vertices_path)
 		}
 
 		head--;
-
-		std::cout << oldOldDestination << " " << oldDestination << "\n";
 		std::string terminus;
 		if(oldOldDestination == -1)
 			terminus = calcul_terminus(oldDestination, head->getId());
@@ -302,10 +314,13 @@ std::list<std::string> Graph::vertex_to_string(std::list<Vertex>& vertices_path)
 		{
 			res.push_back(prendre_ligne + line + " a " + station + " direction " +  terminus + jusqua + head->getName());
 		}
-		else
+		else if (terminus == head->getName())
+		{
+			res.push_back(ensuite + line + " direction " + terminus + " jusqu'au terminus");
+		} else
 			res.push_back(ensuite + line + " direction " + terminus + jusqua + head->getName());
+		
 		head++;
-		unmarkAll();
 	}
 	if(station == vertices_path.back().getName())
 		res.pop_back();
@@ -322,6 +337,7 @@ std::list<std::string> Graph::vertex_to_string(std::list<Vertex>& vertices_path)
 	}
 	unmarkAll();
 	res.push_back("\n== Duree estimee du trajet : " + convert_second_to_string(duration) + " ==");
+	res.push_back("\n\nAlertes voyageurs :\nNous vous rapellons l'importance du port du \nmasque");
 	return res;
 }
 
@@ -356,25 +372,19 @@ std::string Graph::convert_second_to_string(const unsigned int duration)
 
 std::string Graph::calcul_terminus(unsigned int id1, unsigned int id2)
 {
-	std::string res;
-	
 	std::stack<unsigned int> pile;
 	vertices[id1].setMarked(1);
 	vertices[id2].setMarked(1);
 	pile.push(id2);
-	
+
 	while (!pile.empty())
 	{
 		int current = pile.top();
 		pile.pop();
-		
-		Vertex debug1 = vertices[current];
-		std::cout << vertices[current].getName() << std::endl;
 		if (vertices[current].getTerminus())
 			return vertices[current].getName();
 		for (auto& i : vertices[current].getEdges())
 		{
-			Vertex debug2 = vertices[i.getDestination()];
 			if (!(vertices[i.getDestination()].getMarked()) && vertices[i.getDestination()].getLine() == vertices[current].getLine())
 			{
 				if (vertices[i.getDestination()].getTerminus())

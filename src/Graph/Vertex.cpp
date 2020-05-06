@@ -1,6 +1,6 @@
 #include "Vertex.hpp"
 
-Vertex::Vertex() : marked(0),is_terminus(false)
+Vertex::Vertex() : marked(0), is_terminus(false)
 {
 
 }
@@ -16,6 +16,17 @@ Vertex::~Vertex()
 }
 
 std::list<Edge>& Vertex::getEdges() {return edges;}
+Edge& Vertex::getEdge(unsigned int id)
+{
+	for (Edge& i : edges)
+	{
+		if (i.getDestination() == id)
+		{
+			return i;
+		}
+	}
+	throw std::runtime_error("Invalid argument");
+}
 
 unsigned int Vertex::getId() {return id;}
 

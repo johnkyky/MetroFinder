@@ -22,10 +22,10 @@ ButtonColor::~ButtonColor()
 
 bool ButtonColor::button_pressed(sf::RenderWindow& window, const sf::Event& event)
 {
-	if(sf::Mouse::getPosition(window).x >= this->getPosition().x &&
-		sf::Mouse::getPosition(window).x <= this->getPosition().x + dimension.x &&
-		sf::Mouse::getPosition(window).y >= this->getPosition().y &&
-		sf::Mouse::getPosition(window).y <= this->getPosition().y + dimension.y)
+	if(window.mapPixelToCoords(sf::Mouse::getPosition(window)).x >= this->getPosition().x &&
+		window.mapPixelToCoords(sf::Mouse::getPosition(window)).x <= this->getPosition().x + dimension.x &&
+		window.mapPixelToCoords(sf::Mouse::getPosition(window)).y >= this->getPosition().y &&
+		window.mapPixelToCoords(sf::Mouse::getPosition(window)).y <= this->getPosition().y + dimension.y)
 	{
 		if(event.type == sf::Event::MouseButtonPressed && sf::Mouse::isButtonPressed(sf::Mouse::Left))
 		{

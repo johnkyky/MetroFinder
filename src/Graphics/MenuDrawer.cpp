@@ -32,7 +32,6 @@ void MenuDrawer::init()
 MenuDrawer::handleRes MenuDrawer::handleEvent(sf::Event& evt)
 {
     bool temp = false;
-    sf::View v = window.getView();
     if (sourceBox.handleEvent(evt, window) == SearchBox::Known)
         return SourceSwap;
     if (destinationBox.handleEvent(evt, window) == SearchBox::Known)
@@ -229,23 +228,27 @@ void MenuDrawer::render_destsrc()
 
 void MenuDrawer::render_buttons()
 {
+    sf::View  v = window.getView();
     for (int i = 0; i < 16; i++)
     {
         window.draw(linesButton[i]);
     }
+    swapMode.setPosition(sf::Vector2f(v.getSize().x / 2 - swapMode.getDimension().x / 2, v.getSize().y / 5 * 3));
     window.draw(swapMode);
 }
 
 void MenuDrawer::render_path()
 {
     sf::Text temp;
-    temp.setCharacterSize(25);
-    temp.setColor(sf::Color::White);
+    temp.setCharacterSize(25 * double(double(window.getSize().x) / 1920));
+    temp.setFillColor(sf::Color::White);
     temp.setFont(font);
     temp.setPosition({10.f, 25});
 
     for (auto& i : pathString)
     {
+        if (i == pathString.back())
+            temp.setFillColor(sf::Color::Red);
         temp.move(0, temp.getGlobalBounds().height + 5);
         temp.setString(i);
         window.draw(temp);

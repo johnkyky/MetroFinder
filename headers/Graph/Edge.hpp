@@ -5,16 +5,12 @@
 #include <vector>
 
 
-
-
-
 class Edge
 {
 private:
-	unsigned int idSource, idDestination;
-	unsigned int duration;
-	int color = 0;
-	bool isMetro = true;
+	unsigned int idSource, idDestination; // Les aretes sont orienté
+	unsigned int duration;                // Durée du trajet, poids de l'arrete
+	bool isMetro = true;                  // si la connexions corresponds a un trajet a pieds ou a métro
 
 public:
 	Edge();

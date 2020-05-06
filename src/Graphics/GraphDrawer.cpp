@@ -53,6 +53,7 @@ int GraphDrawer::load_station(const std::string fileName)
         file >> x >> y;
         file.get();
         std::getline(file, buffer);
+        // on map les positions réels sur l'écran
         x = mapTo(643000, 662000, 50, 3 * (double) window.getSize().x / 5 - 50, x);
         y = mapTo(6853000, 6873000, window.getSize().y - 50, 50, y);
         stations.insert(std::pair<std::string, Station>(buffer, Station(buffer, x, y)));
