@@ -40,4 +40,6 @@ private:
 	std::list<Vertex> dijkstra_get_path(const unsigned int idSource, const unsigned int idDestintion, const unsigned int *pere);
 	unsigned int get_duration_edge_list(std::list<Edge>& edges, const unsigned int idSource, const unsigned int idDestination);
 	std::string convert_second_to_string(const unsigned int duration);
+	std::string calcul_terminus(unsigned int id1, unsigned int id2);
+	void unmarkAll();
 };

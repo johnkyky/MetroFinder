@@ -137,8 +137,10 @@ void GraphDrawer::handleEvent()
         else if (temp == MenuDrawer::handleRes::ModeSwap)
         {
             vertexPath.clear();
-            selected_station[0]->setSelected(false);
-            selected_station[1]->setSelected(false);
+            if (selected_station[0])
+                selected_station[0]->setSelected(false);
+            if (selected_station[1])
+                selected_station[1]->setSelected(false);
             selected_station[0] = NULL;
             selected_station[1] = NULL;
             menu.resetSourceDestination();

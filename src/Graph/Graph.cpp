@@ -37,6 +37,7 @@ int Graph::load_from_file(std::string fileName)
 		{
 			fileStream >> readString;
 			read.setLine(readString);
+			read.setTerminus(true);
 		}
 		fileStream.get();
 		std::getline(fileStream, readString);
@@ -255,34 +256,59 @@ std::list<std::string> Graph::vertex_to_string(std::list<Vertex>& vertices_path)
 
 	std::string line;
 	std::string station;
+	int oldDestination = -1;
+	int oldOldDestination = -1;
 
 	while(head != vertices_path.end())
 	{	
 		line = head->getLine();
 		station = head->getName();
+		oldDestination = head->getId();
+		//oldOldDestination = head->getId();
+
 
 		while(line == head->getLine())
 		{
+
 			unsigned int idDestintion = head->getId();
 			head++;
+
+
 			if(head == vertices_path.end())
 				break;
 			unsigned int idSource = head->getId();
 
 			unsigned int bufferDuration = get_duration_edge_list(head->getEdges(), idSource, idDestintion);
 			if(!bufferDuration)
-				printf("je sais pas quoi mettre mais on a pas trouver la edge\n");
+				printf("edge not find\n");
 			duration += bufferDuration;
+			
+			if(head->getName() != vertices[oldDestination].getName())
+			{
+				if(vertices[oldOldDestination].getName() != vertices[oldDestination].getName())
+					oldOldDestination = oldDestination;
+				oldDestination = head->getId();
+			}
 		}
 
 		head--;
+
+		
+		///calculer le terminus retrun string
+		std::cout << oldOldDestination << " " << oldDestination << "\n";
+		std::string terminus;
+		if(oldOldDestination == -1)
+			terminus = calcul_terminus(oldDestination, head->getId());
+		else
+			terminus = calcul_terminus(oldOldDestination, oldDestination);
 		if(res.empty())
 		{
-			res.push_back(prendre_ligne + line + " de " + station + jusqua + head->getName());
+			res.push_back(prendre_ligne + line + " a " + station + " direction " +  terminus + jusqua + head->getName());
 		}
 		else
-			res.push_back(ensuite + line + jusqua + head->getName());
+			res.push_back(ensuite + line + " direction " + terminus + jusqua + head->getName());
 		head++;
+		unmarkAll();
 	}
 	if(station == vertices_path.back().getName())
 		res.pop_back();
@@ -297,6 +323,7 @@ std::list<std::string> Graph::vertex_to_string(std::list<Vertex>& vertices_path)
 			i.insert(u, 1, '\n');
 		}
 	}
+	unmarkAll();
 	res.push_back("\n== Duree estimee du trajet : " + convert_second_to_string(duration) + " ==");
 	return res;
 }
@@ -327,4 +354,45 @@ std::string Graph::convert_second_to_string(const unsigned int duration)
 		time += std::to_string(second) + "s";
 
 	return time;
+}
+
+
+std::string Graph::calcul_terminus(unsigned int id1, unsigned int id2)
+{
+	std::string res;
+	
+	std::stack<unsigned int> pile;
+	vertices[id1].setMarked(1);
+	vertices[id2].setMarked(1);
+	pile.push(id2);
+	
+	while (!pile.empty())
+	{
+		int current = pile.top();
+		pile.pop();
+		
+		Vertex debug1 = vertices[current];
+		std::cout << vertices[current].getName() << std::endl;
+		if (vertices[current].getTerminus())
+			return vertices[current].getName();
+		for (auto& i : vertices[current].getEdges())
+		{
+			Vertex debug2 = vertices[i.getDestination()];
+			if (!(vertices[i.getDestination()].getMarked()) && vertices[i.getDestination()].getLine() == vertices[current].getLine())
+			{
+				if (vertices[i.getDestination()].getTerminus())
+					return vertices[i.getDestination()].getName();
+				pile.push(i.getDestination());
+				vertices[i.getDestination()].setMarked(1);
+			}
+		}
+	}
+	throw std::runtime_error("Unknown terminus :) !");
+}
+
+
+void Graph::unmarkAll()
+{
+	for(auto& i : vertices)
+		i.second.setMarked(0);
 }

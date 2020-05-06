@@ -1,5 +1,5 @@
 cc = g++
-CFLAGS = -Wall -g
+CFLAGS = -Wall -g -Werror
 SFFLAGS = -lsfml-system -lsfml-window -lsfml-graphics -lsfml-audio
 
 objdir = obj
