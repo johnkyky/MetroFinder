@@ -37,9 +37,9 @@ public:
 
 	void add_edge(const unsigned int source, const unsigned int destination, const unsigned int duration, bool isMetro = true);
 	void add_edge(Edge val);
-	int getMarked();
-	void setMarked(int marked);
 
+	int getMarked();
+	void setMarked(int val);
 	void setTerminus(bool val);
 	bool getTerminus();
 };

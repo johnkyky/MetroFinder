@@ -1,6 +1,6 @@
 #include "Vertex.hpp"
 
-Vertex::Vertex() : marked(false), is_terminus(false)
+Vertex::Vertex() : marked(0), is_terminus(false)
 {
 
 }
