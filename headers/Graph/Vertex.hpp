@@ -15,8 +15,9 @@ private:
 	std::string name;      // noms de la station/quais, sans accents
 	std::string line;      // nom de la ligne
 	unsigned int id;       // id unique
-	bool is_terminus;
 	int marked;
+	bool is_terminus;
+
 
 public:
 	Vertex();
@@ -24,7 +25,7 @@ public:
 	~Vertex();
 
 	std::list<Edge>& getEdges();
-	Edge& getEdge(int id);
+	Edge& getEdge(unsigned int id);
 
 	unsigned int getId();
 	void setId(const unsigned int val);

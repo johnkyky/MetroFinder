@@ -77,7 +77,6 @@ void Graph::spread_line()
 	// Pour chaque station dans le graph
 	for (auto& station : vertices)
 	{
-		int direction;
 		// Si la station a une ligne définie et n'est pas marqué 
 		// (correspond a un terminus)
 		if (station.second.getLine() == "" || station.second.getMarked())

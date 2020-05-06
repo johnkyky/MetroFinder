@@ -42,5 +42,5 @@ $(objdir) :
 	mkdir $(objdir)
 
 clear:
-	rm obj/*
+	rm -rf obj
 	rm MetroFinder

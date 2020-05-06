@@ -1,8 +1,8 @@
 #include "Vertex.hpp"
 
-Vertex::Vertex() : marked(false)
+Vertex::Vertex() : marked(false), is_terminus(false)
 {
-	is_terminus = false;
+
 }
 
 Vertex::Vertex(const std::string nname, const unsigned int nid, const std::string nline) : name(nname), line(nline), id(nid), marked(0), is_terminus(false)
@@ -16,7 +16,7 @@ Vertex::~Vertex()
 }
 
 std::list<Edge>& Vertex::getEdges() {return edges;}
-Edge& Vertex::getEdge(int id)
+Edge& Vertex::getEdge(unsigned int id)
 {
 	for (Edge& i : edges)
 	{
