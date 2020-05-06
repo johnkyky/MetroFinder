@@ -110,12 +110,12 @@ V 0108 Fort d'Aubervilliers
 V 0109 Franklin D. Roosevelt
 V 0110 Franklin D. Roosevelt
 V 0111 Felix Faure
-V 0112 Gabriel Peri, Asnieres-Gennevilliers
+T 0112 13 Gabriel Peri, Asnieres-Gennevilliers
 V 0113 Gaite
-V 0114 Gallieni
+T 0114 3 Gallieni
 V 0115 Gambetta
-V 0116 Gambetta
-V 0117 Gare d'Austerlitz
+T 0116 3b Gambetta
+T 0117 10 Gare d'Austerlitz
 V 0118 Gare d'Austerlitz
 V 0119 Gare de Lyon
 V 0120 Gare de Lyon
@@ -128,13 +128,13 @@ V 0126 Garibaldi
 V 0127 George V
 V 0128 Glaciere
 V 0129 Goncourt
-V 0130 Grande Arche de la Defense
+T 0130 1 Grande Arche de la Defense
 V 0131 Guy Moquet
 V 0132 Havre Caumartin
 V 0133 Havre Caumartin
 V 0134 Hoche
 V 0135 Hotel de Ville
-V 0136 Hotel de Ville
+T 0136 11 Hotel de Ville
 V 0137 Invalides
 V 0138 Invalides
 V 0139 Iena
@@ -174,7 +174,7 @@ V 0172 Lourmel
 V 0173 Louvre, Rivoli
 V 0174 Mabillon
 V 0175 Madeleine
-V 0176 Madeleine
+T 0176 14 Madeleine
 V 0177 Madeleine
 T 0178 12 Mairie d'Issy
 V 0179 Mairie d'Ivry
@@ -212,7 +212,7 @@ V 0210 Mouton-Duvernet
 V 0211 Menilmontant
 V 0212 Nation
 T 0213 2 Nation
-V 0214 Nation
+T 0214 6 Nation
 V 0215 Nation
 V 0216 Nationale
 V 0217 Notre Dame de Lorette
@@ -238,9 +238,9 @@ V 0236 Picpus
 V 0237 Pierre Curie
 V 0238 Pigalle
 V 0239 Pigalle
-V 0240 Place Balard
+T 0240 8 Place Balard
 V 0241 Place Monge
-V 0242 Place d'Italie
+T 0242 5 Place d'Italie
 V 0243 Place d'Italie
 V 0244 Place d'Italie
 V 0245 Place de Clichy
@@ -251,16 +251,16 @@ V 0249 Plaisance
 V 0250 Poissonniere
 T 0251 3 Pont de Levallois, Becon
 V 0252 Pont de Neuilly
-V 0253 Pont de Sevres
+T 0253 9 Pont de Sevres
 V 0254 Pont-Marie
 V 0255 Pont-Neuf
-V 0256 Porte Dauphine
+T 0256 2 Porte Dauphine
 V 0257 Porte Doree
 V 0258 Porte Maillot
 V 0259 Porte d'Auteuil
 V 0260 Porte d'Italie
 V 0261 Porte d'Ivry
-V 0262 Porte d'Orleans
+T 0262 4 Porte d'Orleans
 V 0263 Porte de Bagnolet
 V 0264 Porte de Champerret
 V 0265 Porte de Charenton
@@ -274,11 +274,11 @@ V 0272 Porte de Saint-Ouen
 V 0273 Porte de Vanves
 V 0274 Porte de Versailles
 V 0275 Porte de Vincennes
-V 0276 Porte de la Chapelle
+T 0276 12 Porte de la Chapelle
 V 0277 Porte de la Villette
 V 0278 Porte des Lilas
 T 0279 3b Porte des Lilas
-V 0280 Pre-Saint-Gervais
+T 0280 7b Pre-Saint-Gervais
 V 0281 Pyramides
 V 0282 Pyramides
 V 0283 Pyrenees
@@ -317,7 +317,7 @@ V 0315 Republique
 V 0316 Saint-Ambroise
 V 0317 Saint-Augustin
 V 0318 Saint-Denis-Porte de Paris
-V 0319 Saint-Denis-Universite
+T 0319 13 Saint-Denis-Universite
 V 0320 Saint-Fargeau
 V 0321 Saint-Francois Xavier
 V 0322 Saint-Georges
@@ -363,7 +363,7 @@ V 0361 Vavin
 V 0362 Victor Hugo
 V 0363 Villejuif, Louis Aragon
 V 0364 Villejuif, Leo Lagrange
-V 0365 Villejuif, P. Vaillant Couturier
+T 0365 7 Villejuif, P. Vaillant Couturier
 V 0366 Villiers
 V 0367 Villiers
 V 0368 Volontaires
@@ -699,7 +699,6 @@ E 249 273 35
 E 254 345 75
 E 256 362 37
 E 257 265 26
-E 259 198 47
 E 259 36 84
 E 260 266 37
 E 261 266 46

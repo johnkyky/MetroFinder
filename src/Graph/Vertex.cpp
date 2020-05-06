@@ -1,11 +1,11 @@
 #include "Vertex.hpp"
 
-Vertex::Vertex()
+Vertex::Vertex() : marked(false)
 {
-
+	is_terminus = false;
 }
 
-Vertex::Vertex(const std::string nname, const unsigned int nid, const std::string nline) : name(nname), line(nline), id(nid)
+Vertex::Vertex(const std::string nname, const unsigned int nid, const std::string nline) : name(nname), line(nline), id(nid), marked(0), is_terminus(false)
 {
 
 }
@@ -16,6 +16,17 @@ Vertex::~Vertex()
 }
 
 std::list<Edge>& Vertex::getEdges() {return edges;}
+Edge& Vertex::getEdge(int id)
+{
+	for (Edge& i : edges)
+	{
+		if (i.getDestination() == id)
+		{
+			return i;
+		}
+	}
+	throw std::runtime_error("Invalid argument");
+}
 
 unsigned int Vertex::getId() {return id;}
 
@@ -37,3 +48,7 @@ void Vertex::add_edge(unsigned int idSource, unsigned int idDestination, unsigne
 
 
 void Vertex::add_edge(Edge val) {edges.push_front(val);}
+int Vertex::getMarked() {return marked;}
+void Vertex::setMarked(int val) {marked = val;}
+void Vertex::setTerminus(bool val) {is_terminus = val;}
+bool Vertex::getTerminus() {return is_terminus;}

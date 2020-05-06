@@ -37,6 +37,7 @@ int Graph::load_from_file(std::string fileName)
 		{
 			fileStream >> readString;
 			read.setLine(readString);
+			read.setTerminus(true);
 		}
 		fileStream.get();
 		std::getline(fileStream, readString);
@@ -64,30 +65,44 @@ int Graph::load_from_file(std::string fileName)
 		vertices[read.getSource()].add_edge(read);
 		fileStream >> buffer;
 	}
-	load_line();
+	spread_line();
 	return 1;
 }
 
-
-void Graph::load_line()
+void Graph::spread_line()
 {
+	// Pile pour stocker les ids des stations a traiter
 	std::stack<unsigned int> to_treat;
 
+	// Pour chaque station dans le graph
 	for (auto& station : vertices)
 	{
-		if (station.second.getLine() == "")
+		int direction;
+		// Si la station a une ligne définie et n'est pas marqué 
+		// (correspond a un terminus)
+		if (station.second.getLine() == "" || station.second.getMarked())
 			continue;
+		station.second.setMarked(true);
+
+		// on rajoute la station sur la pile
 		to_treat.push(station.second.getId());
+		
+		// parcours en profondeur
 		while (!to_treat.empty())
 		{
 			Vertex& buffer = vertices[to_treat.top()];
-			
 			to_treat.pop(); 
+
+			// pour chaque connexions de la station courantes
 			for (auto& e : buffer.getEdges())
 			{
-				if (e.getMetro() == false || vertices[e.getDestination()].getLine() != "")
+				//Si la liaison n'est pas de la marche (meme ligne) et que la station n'a pas de ligne définie
+				if (e.getMetro() == false || vertices[e.getDestination()].getLine() != "" || vertices[e.getDestination()].getMarked())
 					continue;
-				vertices[e.getDestination()].setLine(buffer.getLine());
+				// on définie la ligne et on push la nouvelle station sur la pile
+				Vertex& tmp = vertices[e.getDestination()];
+				tmp.setLine(buffer.getLine());
+				tmp.setMarked(1);
 				to_treat.push(e.getDestination());
 			}
 		}
@@ -255,11 +270,13 @@ std::list<std::string> Graph::vertex_to_string(std::list<Vertex>& vertices_path)
 
 	std::string line;
 	std::string station;
+	std::string direction;
 
 	while(head != vertices_path.end())
 	{	
 		line = head->getLine();
 		station = head->getName();
+		
 
 		while(line == head->getLine())
 		{
@@ -278,10 +295,10 @@ std::list<std::string> Graph::vertex_to_string(std::list<Vertex>& vertices_path)
 		head--;
 		if(res.empty())
 		{
-			res.push_back(prendre_ligne + line + " de " + station + jusqua + head->getName());
+			res.push_back(prendre_ligne + line + " direction " + direction + " de " + station + jusqua + head->getName());
 		}
 		else
-			res.push_back(ensuite + line + jusqua + head->getName());
+			res.push_back(ensuite + line + " direction " + direction + jusqua + head->getName());
 		head++;
 	}
 	if(station == vertices_path.back().getName())
@@ -327,4 +344,10 @@ std::string Graph::convert_second_to_string(const unsigned int duration)
 		time += std::to_string(second) + "s";
 
 	return time;
+}
+
+void Graph::unmarkAll()
+{
+	for (auto& i :vertices)
+		i.second.setMarked(0);
 }

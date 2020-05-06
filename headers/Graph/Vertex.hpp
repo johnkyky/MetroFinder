@@ -11,10 +11,12 @@
 class Vertex
 {
 private:
-	std::list<Edge> edges;
-	std::string name;
-	std::string line;
-	unsigned int id;
+	std::list<Edge> edges; // connexions sortantes
+	std::string name;      // noms de la station/quais, sans accents
+	std::string line;      // nom de la ligne
+	unsigned int id;       // id unique
+	bool is_terminus;
+	int marked;
 
 public:
 	Vertex();
@@ -22,6 +24,7 @@ public:
 	~Vertex();
 
 	std::list<Edge>& getEdges();
+	Edge& getEdge(int id);
 
 	unsigned int getId();
 	void setId(const unsigned int val);
@@ -33,4 +36,9 @@ public:
 
 	void add_edge(const unsigned int source, const unsigned int destination, const unsigned int duration, bool isMetro = true);
 	void add_edge(Edge val);
+	int getMarked();
+	void setMarked(int marked);
+
+	void setTerminus(bool val);
+	bool getTerminus();
 };
