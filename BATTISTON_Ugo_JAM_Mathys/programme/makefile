@@ -1,5 +1,5 @@
 cc = g++
-CFLAGS = -Wall -g -Werror
+CFLAGS = -Wall -g
 SFFLAGS = -lsfml-system -lsfml-window -lsfml-graphics -lsfml-audio
 
 objdir = obj
@@ -24,13 +24,13 @@ run: MetroFinder
 	./MetroFinder
 
 MetroFinder: $(graphdir) $(graphicdir) $(_GRAPH_OBJ) $(_GRAPHICS_OBJ)
-	$(cc) -I$(graphicheaders) -I$(graphheaders)  $(CFLAGS) $(SFFLAGS) src/main.cpp $(_GRAPH_OBJ) $(_GRAPHICS_OBJ) -o MetroFinder
+	$(cc) -I$(graphicheaders) -I$(graphheaders)  $(CFLAGS) src/main.cpp $(SFFLAGS) $(_GRAPH_OBJ) $(_GRAPHICS_OBJ) -o MetroFinder
 
 $(graphdir)/%.o: $(graphsrc)/%.cpp $(graphheaders)/%.hpp
 	$(cc) -c -I$(graphheaders) $(CFLAGS)  $< $2 -o $@
 
 $(graphicdir)/%.o: $(graphicsrc)/%.cpp $(graphicheaders)/%.hpp
-	$(cc) -c -I$(graphicheaders) -I$(graphheaders) $(CFLAGS)  $(SFFLAGS) $< $2 -o $@
+	$(cc) -c -I$(graphicheaders) -I$(graphheaders) $(CFLAGS) $< $(SFFLAGS) $2 -o $@
 
 $(graphdir) : $(objdir)
 	mkdir $(graphdir)
